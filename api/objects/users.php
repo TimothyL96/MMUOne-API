@@ -147,7 +147,7 @@
 			}
 			else
 			{
-				$this->error = "FATAL ERROR: COUNT IS NEGATIVE WHILE SIGNING IN";
+				//$this->error = "FATAL ERROR: COUNT IS NEGATIVE WHILE SIGNING IN";
 			}
 			
 			return false;
