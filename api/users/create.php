@@ -33,9 +33,11 @@
 	if ($users->create())
 	{
 		//	Succeeded
+		//	Set values for message array
 		$users->message['status'] = "succeed";
 		$users->message['messsage'] = "User successfully registered";
 		
+		//	Echo JSON message
 		$users->echoMessage();
 	}
 	else
@@ -48,9 +50,11 @@
 			$errorCode = $users->error;
 		}
 	
+		//	Set values for message array
 		$users->message['status'] = "failed";
 		$users->message['code'] = $errorCode;
 		$users->message['messsage'] = $errorText;
 		
+		//	Echo JSON message
 		$users->echoMessage();
 	}

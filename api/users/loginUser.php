@@ -28,10 +28,12 @@
 	if ($users->loginUser())
 	{
 		//	Succeeded
-		echo "{";
-		echo "\"status\": \"succeed\",";
-		echo "\"messsage\": \"User successfully logged in\"";
-		echo "}";
+		//	Set values for message array
+		$users->message['status'] = "succeed";
+		$users->message['message'] = "User successfully logged in";
+		
+		//	Echo JSON message
+		$users->echoMessage();
 	}
 	else
 	{
@@ -43,9 +45,11 @@
 			$errorCode = $users->error;
 		}
 	
-		echo "{";
-		echo "\"status\": \"failed\",";
-		echo "\"code\": \"{$errorCode}\",";
-		echo "\"message\": \"{$errorText}\"";
-		echo "}";
+		//	Set values for message array
+		$users->message['status'] = "failed";
+		$users->message['code'] = $erroCode;
+		$users->message['message'] = $errorText;
+		
+		//	Echo JSON message
+		$users->echoMessage();
 	}
