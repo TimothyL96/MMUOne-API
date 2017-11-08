@@ -30,7 +30,7 @@
 	$users->date_registered = date('Y-m-d H:i:s');
 	
 	//	Create the product
-	if ($users->create())
+	if ($users->loginUser())
 	{
 		echo "{";
 		echo "\"status\": \"succeed\",";

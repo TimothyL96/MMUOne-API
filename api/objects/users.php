@@ -114,7 +114,7 @@
 			//	Execute query
 			if (!$stmt->execute())
 			{
-				$this->error = $stmt->errorInfo;
+				$this->error = $stmt->errorInfo[1];
 				return false;
 			}
 			
