@@ -112,7 +112,7 @@
 			$stmt->bindParam(1, $this->student_id);
 			
 			//	Execute query
-			if (!$stmt->execute())
+			if ($stmt->execute())
 			{
 				$this->error = $stmt->errorInfo[1];
 				return false;
