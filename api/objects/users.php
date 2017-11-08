@@ -17,6 +17,7 @@
 		public $last_login;
 		public $date_registered;
 		public $error;
+		public $message = array();
 		
 		//	Constructor
 		public function __construct($db)
@@ -235,5 +236,20 @@
 			}
 			
 			return $errorText;
+		}
+		
+		function echoMessage()
+		{
+			$msgCheck = $message;
+			echo "{";
+			foreach ($message as $key => $value)
+			{
+				echo "\"{$key}\": \"{$value}\"";
+				if (end($msgCheck) != $value)
+				{
+					echo ",";
+				}	
+			}
+			echo "}";			
 		}
 	}

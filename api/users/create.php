@@ -30,15 +30,17 @@
 	$users->date_registered = date('Y-m-d H:i:s');
 	
 	//	Create the product
-	if ($users->loginUser())
+	if ($users->create())
 	{
-		echo "{";
-		echo "\"status\": \"succeed\",";
-		echo "\"messsage\": \"User successfully registered\"";
-		echo "}";
+		//	Succeeded
+		$users->message['status'] = "succeed";
+		$users->message['messsage'] = "User successfully registered";
+		
+		$users->echoMessage();
 	}
 	else
 	{
+		//	Failed
 		//	Set error
 		if (!empty($users->error))
 		{
@@ -46,9 +48,9 @@
 			$errorCode = $users->error;
 		}
 	
-		echo "{";
-		echo "\"status\": \"failed\",";
-		echo "\"code\": \"{$errorCode}\",";
-		echo "\"message\": \"{$errorText}\"";
-		echo "}";
+		$users->message['status'] = "failed";
+		$users->message['code'] = $errorCode;
+		$users->message['messsage'] = $errorText;
+		
+		$users->echoMessage();
 	}
