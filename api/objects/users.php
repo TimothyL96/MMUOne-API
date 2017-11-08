@@ -242,7 +242,7 @@
 		{
 			$msgCheck = $this->message;
 			echo "{";
-			foreach ($message as $key => $value)
+			foreach ($this->message as $key => $value)
 			{
 				echo "\"{$key}\": \"{$value}\"";
 				if (end($msgCheck) != $value)
