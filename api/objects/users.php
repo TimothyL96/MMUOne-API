@@ -88,7 +88,7 @@
 			$stmt->bindParam(":date_registered", $this->date_registered);
 
 			//	Execute query
-			if (!$stmt->execute())
+			if ($stmt->execute())
 			{
 				return true;
 			}
@@ -112,7 +112,7 @@
 			$stmt->bindParam(1, $this->student_id);
 			
 			//	Execute query
-			if ($stmt->execute())
+			if (!$stmt->execute())
 			{
 				$this->error = $stmt->errorInfo[1];
 				return false;
@@ -126,11 +126,11 @@
 			
 			if ($count > 1)
 			{
-				$this->error = "FATAL ERROR: NON UNIQUE ID WHILE SIGNING IN";
+				$this->error = 10613;
 			}
 			else if ($count == 0)
 			{
-				$this->error = "NO ACCOUNT FOUND";
+				$this->error = 10611;
 			}
 			else if (count == 1)
 			{
@@ -142,12 +142,12 @@
 				}
 				else
 				{
-					$this->error = "PASSWORD ERROR";
+					$this->error = 10612;
 				}
 			}
 			else
 			{
-				$this->error = "FATAL ERROR: COUNT IS NEGATIVE WHILE SIGNING IN";
+				$this->error = 10614;
 			}
 			
 			return false;
@@ -209,6 +209,18 @@
 			//	Convert error code to text
 			switch ($this->error)
 			{
+				case '10611':
+					$errorText = "NO ACCOUNT FOUND";
+					break;
+				case '10612':
+					$errorText = "PASSWORD ERROR";
+					break;
+				case '10613':
+					$errorText = "FATAL ERROR: NON UNIQUE ID WHILE SIGNING IN";
+					break;
+				case '10614':
+					$errorText = "FATAL ERROR: COUNT IS NEGATIVE WHILE SIGNING IN";
+					break;
 				case '10621':
 					$errorText = "Duplicate entry for email";
 					break;
