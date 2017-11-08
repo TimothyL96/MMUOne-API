@@ -240,7 +240,7 @@
 		
 		function echoMessage()
 		{
-			$msgCheck = $message;
+			$msgCheck = $this->message;
 			echo "{";
 			foreach ($message as $key => $value)
 			{
