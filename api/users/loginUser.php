@@ -47,7 +47,7 @@
 	
 		//	Set values for message array
 		$users->message['status'] = "failed";
-		$users->message['code'] = $erroCode;
+		$users->message['code'] = $errorCode;
 		$users->message['message'] = $errorText;
 		
 		//	Echo JSON message
