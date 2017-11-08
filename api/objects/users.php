@@ -132,7 +132,7 @@
 			{
 				$this->error = 10611;
 			}
-			else if (count == 1)
+			else if ($count == 1)
 			{
 				$this->full_name = $row['full_name'];
 				
