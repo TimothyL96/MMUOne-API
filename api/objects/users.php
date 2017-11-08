@@ -88,7 +88,7 @@
 			$stmt->bindParam(":date_registered", $this->date_registered);
 
 			//	Execute query
-			if ($stmt->execute())
+			if (!$stmt->execute())
 			{
 				return true;
 			}
