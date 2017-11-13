@@ -233,13 +233,13 @@
 					break;
 				//	Registration:
 				case '10621':
-					$errorText = "Duplicate entry for email";
+					$errorText = "DUPLICATE ENTRY FOR EMAIL";
 					break;
 				case '10622':
-					$errorText = "Duplicate entry for student ID";
+					$errorText = "DUPLICATE ENTRY FOR STUDENT ID";
 					break;
 				case '10623':
-					$errorText = "Duplicate entry for email and student ID";
+					$errorText = "DUPLICATE ENTRY FOR EMAIL AND STUDENT ID";
 					break;
 				//	No error code:
 				default:
