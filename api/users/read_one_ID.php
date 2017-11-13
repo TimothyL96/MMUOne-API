@@ -4,7 +4,7 @@
 	header("Access-Control-Allow-Headers: access");
 	header("Access-Control-Allow-Methods: GET");
 	header("Access-Control-Allow-Credentials: true");
-	header("Content-Type: application/json");
+	header("Content-Type: application/json; charset=UTF-8");
 	
 	//	Connection
 	require_once '../config/connection.php';
@@ -26,10 +26,14 @@
 	}
 	else
 	{
-		echo "{";
-		echo "\"status\": \"failed\",";
-		echo "\"messsage\": \"No student ID received\"";
-		echo "}";
+		$users->message['status'] = "failed";
+		$users->message['code'] = $users->error;
+		$users->message['message'] = $users->getErrorText(10600);
+		
+		//	Echo JSON message
+		$users->echoMessage();
+		
+		//	Kill
 		die();
 	};
 	
@@ -51,8 +55,5 @@
 		);
 	
 	//	Echo is JSON format
-	echo "{";
-	echo "\"status\": \"failed\",";
-	echo "\"messsage\": \"" . print_r(json_encode($users_array)) . "\"";
-	echo "}";
-		
+	$users->message['status'] = "succeed";
+	$users->message['message'] = json_encode($users_array);

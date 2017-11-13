@@ -161,7 +161,7 @@
 		function readOneByStudentID()
 		{
 			//	Query to read single record
-			$query = "SELECT full_name, email, password_mmu, faculty, campus, profile_pic, last_login, date_registered FROM " . $this->tableName . " ORDER BY full_name WHERE student_id = ?";
+			$query = "SELECT full_name, email, password_mmu, faculty, campus, profile_pic, last_login, date_registered FROM {$this->tableName} ORDER BY full_name WHERE student_id = ?";
 			
 			//	Prepare query
 			$stmt = $this->conn->prepare($query);
@@ -201,15 +201,18 @@
 			return $stmt;
 		}
 		
-		function getErrorText()
+		function getErrorText($errorCode = $this->error)
 		{
 			//	Error text variable
 			$errorText;
 			
 			//	TODO
 			//	Convert error code to text
-			switch ($this->error)
+			switch ($errorCode)
 			{
+				case '10600':
+					$errorText = "NO Student ID received";
+					break;
 				case '10611':
 					$errorText = "NO ACCOUNT FOUND";
 					break;
