@@ -201,10 +201,14 @@
 			return $stmt;
 		}
 		
-		function getErrorText($errorCode = $this->error)
+		function getErrorText($errorCode = NULL)
 		{
 			//	Error text variable
 			$errorText;
+			if (!$errorCode)
+			{
+				$errorCode = $user->error;
+			}
 			
 			//	TODO
 			//	Convert error code to text
