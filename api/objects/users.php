@@ -214,9 +214,11 @@
 			//	Convert error code to text
 			switch ($errorCode)
 			{
+				//	Read One:
 				case '10600':
 					$errorText = "FATAL ERROR: No Student ID received";
 					break;
+				//	Signing In:
 				case '10611':
 					$errorText = "NO ACCOUNT FOUND";
 					break;
@@ -229,6 +231,7 @@
 				case '10614':
 					$errorText = "FATAL ERROR: COUNT IS NEGATIVE WHILE SIGNING IN";
 					break;
+				//	Registration:
 				case '10621':
 					$errorText = "Duplicate entry for email";
 					break;
@@ -238,6 +241,7 @@
 				case '10623':
 					$errorText = "Duplicate entry for email and student ID";
 					break;
+				//	No error code:
 				default:
 					$errorText = "Unknown error occured";					
 			}
