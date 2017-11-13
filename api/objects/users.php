@@ -207,7 +207,7 @@
 			$errorText;
 			if (is_null($errorCode))
 			{
-				$errorCode = $user->error;
+				$errorCode = $this->error;
 			}
 			
 			//	TODO
