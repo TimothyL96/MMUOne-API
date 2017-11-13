@@ -205,7 +205,7 @@
 		{
 			//	Error text variable
 			$errorText;
-			if (!$errorCode)
+			if (is_null($errorCode))
 			{
 				$errorCode = $user->error;
 			}
@@ -215,7 +215,7 @@
 			switch ($errorCode)
 			{
 				case '10600':
-					$errorText = "NO Student ID received";
+					$errorText = "FATAL ERROR: No Student ID received";
 					break;
 				case '10611':
 					$errorText = "NO ACCOUNT FOUND";
