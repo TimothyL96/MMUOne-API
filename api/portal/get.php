@@ -31,7 +31,21 @@
 		//	Echo JSON message
 		
 		//	Kill
-		die();
+		die("No student ID specified");
 	};
 	
+	//	URL of MMU Portal
+	$url = "https://online.mmu.edu.my";
+	
 	//	Connect to MMU PORTAL with cURL
+	$curl = curl_init($url);
+	curl_setopt($curl, CURLOPT_POST, FALSE);
+	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+	curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.93 Safari/537.36");
+	curl_setopt($curl, CURLOPT_HEADER, FALSE);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+	$result = curl_exec($curl);
+	
+	//	Process the return value
+	echo $result;

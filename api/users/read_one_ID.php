@@ -34,7 +34,7 @@
 		$users->echoMessage();
 		
 		//	Kill
-		die();
+		die("No student ID specified");
 	};
 	
 	//	Read one
