@@ -55,11 +55,20 @@
 	curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
 	$result = curl_exec($curl);
 	
+	curl_setopt($curl, CURLOPT_POST, TRUE);
+	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+	curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.93 Safari/537.36");
+	curl_setopt($curl, CURLOPT_HEADER, FALSE);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+	$result = curl_exec($curl);
+	
 	//	cURL error
 	echo 'Error: ' . curl_error($curl) . '\n';
 	$status = curl_getinfo($curl, CURLINFO_COOKIELIST); 
 	echo 'HTTP CODE: ' . $status;
-
+	
 	//	Process the return value
 	echo $result;
 	
