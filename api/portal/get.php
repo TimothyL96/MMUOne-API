@@ -42,7 +42,7 @@
 	$url = "https://online.mmu.edu.my/index.php";
 	
 	//	Data for Login POST
-	$data = array('form_loginUsername' => $studentID, 'login-password' => $password);
+	$data = array('form_loginUsername' => $studentID, 'form_loginPassword' => $password);
 	
 	//	Connect to MMU PORTAL with cURL
 	$curl = curl_init($url);
