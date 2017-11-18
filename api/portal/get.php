@@ -55,5 +55,8 @@
 	curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
 	$result = curl_exec($curl);
 	
+	//	cURL error
+	echo 'Error: ' . curl_error($curl);
+	
 	//	Process the return value
 	echo $result;
