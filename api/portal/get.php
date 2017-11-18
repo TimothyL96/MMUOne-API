@@ -56,7 +56,12 @@
 	$result = curl_exec($curl);
 	
 	//	cURL error
-	echo 'Error: ' . curl_error($curl);
-	
+	echo 'Error: ' . curl_error($curl) . '\n';
+	$status = curl_getinfo($curl, CURLINFO_HTTP_CODE); 
+	echo 'HTTP CODE: ' . $status;
+
 	//	Process the return value
 	echo $result;
+	
+	//	Close cUrl resource and free up system resources
+	curl_close($curl);
