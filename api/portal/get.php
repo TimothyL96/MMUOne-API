@@ -39,7 +39,7 @@
 	};
 	
 	//	URL of MMU Portal
-	$url = "https://online.mmu.edu.my";
+	$url = "https://online.mmu.edu.my/index.php";
 	
 	//	Data for Login POST
 	$data = array('form_loginUsername' => $studentID, 'login-password' => $password);
