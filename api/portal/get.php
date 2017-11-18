@@ -26,7 +26,7 @@
 	$users = new Users($conn);
 	
 	//	Check if Student ID provided
-	if (isset($_GET['student_id']))
+	if (!empty($_GET['student_id']))
 	{
 		//	Retrieve user MMU IDM password to login to MMU Portal
 		

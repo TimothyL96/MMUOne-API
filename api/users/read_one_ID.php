@@ -20,7 +20,7 @@
 	$users = new Users($conn);
 	
 	//	Set student ID of user to be read
-	if (isset($_GET['student_id']))
+	if (!empty($_GET['student_id']))
 	{
 		$users->student_id = $_GET['student_id'];
 	}
