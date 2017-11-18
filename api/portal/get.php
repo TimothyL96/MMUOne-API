@@ -57,7 +57,7 @@
 	
 	//	cURL error
 	echo 'Error: ' . curl_error($curl) . '\n';
-	$status = curl_getinfo($curl, CURLINFO_HTTP_CODE); 
+	$status = curl_getinfo($curl, CURLINFO_COOKIELIST); 
 	echo 'HTTP CODE: ' . $status;
 
 	//	Process the return value
