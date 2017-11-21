@@ -57,7 +57,7 @@
 	//	Create cookie file
 	$cookie = tempnam("/cookie", "CURLCOOKIE");
 	
-	//	Connect to MMU PORTAL with cURL
+	//	Connect to MMLS with cURL
 	$curl = curl_init($url);
 	curl_setopt($curl, CURLOPT_POST, FALSE);
 	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
@@ -83,10 +83,8 @@
 	
 	//	Data to get Login Cookies
 	$data = array('_token' => $token,'stud_id' => $studentID, 'stud_pswrd' => $password);
-	
-	print_r($data);
-	
-	//	Connect to MMU PORTAL with cURL
+		
+	//	Login to MMLS with cURL
 	$curl = curl_init($url);
 	curl_setopt($curl, CURLOPT_POST, TRUE);
 	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
@@ -101,10 +99,9 @@
 	
 	//	Get any cURL error
 	curl_error($curl);
-	$status = curl_getinfo($curl, CURLINFO_COOKIELIST); 
 	
 	//	Process the return value
-	echo $result;
+	$result;
 	
 	//	Close cUrl resource and free up system resources
 	curl_close($curl);

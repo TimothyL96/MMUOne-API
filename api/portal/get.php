@@ -59,11 +59,11 @@
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+	curl_setopt($curl, CURLOPT_COOKIEJAR, $cookie);
 	$result = curl_exec($curl);
 	
 	//	Get any cURL error
-	curl_error($curl);
-	$status = curl_getinfo($curl, CURLINFO_COOKIELIST); 
+	curl_error($curl); 
 	
 	//	Process the return value
 	$result;
