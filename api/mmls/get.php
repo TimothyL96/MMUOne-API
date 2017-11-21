@@ -54,9 +54,6 @@
 	//	URL of MMU Portal
 	$url = "https://mmls.mmu.edu.my/";
 	
-	//	Data to get Login Cookies
-	$data = array('_token' => $token,'stud_id' => $studentID, 'stud_pswrd' => $password);
-	
 	//	Create cookie file
 	$cookie = tempnam("/cookie", "CURLCOOKIE");
 	
@@ -72,19 +69,20 @@
 	$result = curl_exec($curl);
 	
 	//	Get the token to login
-	//$htmlDOMObject = str_get_html($result);
+	//	Load the string to HTML DOM without stripping /r/n tags
 	$htmlDOM->load($result, true, false);
-	$ret = $htmlDOM->find('input[name=_token]');
-	echo $ret[0]->value;
-	foreach ($ret as $rete)
-	{
-		//echo $rete->value . "<br/>";
-	}
 	
-	die("132");
+	//	Find the desired input field
+	$inputToken = $htmlDOM->find('input[name=_token]');
+	
+	//	Get the token value
+	$token $inputToken[0]->value;
 	
 	//	Set the URL for POST login
 	$url = "https://mmls.mmu.edu.my/checklogin";
+	
+	//	Data to get Login Cookies
+	$data = array('_token' => $token,'stud_id' => $studentID, 'stud_pswrd' => $password);
 	
 	//	Connect to MMU PORTAL with cURL
 	$curl = curl_init($url);
