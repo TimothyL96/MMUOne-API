@@ -73,7 +73,7 @@
 	
 	//	Get the token to login
 	//$htmlDOMObject = str_get_html($result);
-	$htmlDOM->load($result);
+	$htmlDOM->load($result, true, false);
 	$ret = $htmlDOM->find('input[name=_token]');
 	print_r($htmlDOM);
 	print_r($ret);
