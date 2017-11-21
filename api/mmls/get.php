@@ -18,6 +18,9 @@
 	//	Users object
 	require_once '../objects/users.php';
 	
+	//	Get Simple HTML DOM library
+	require_once '../library/html_dom.php';
+	
 	//	Instantiate users object and retrieve connection
 	$db = new Database();
 	$conn = $db->connect();
@@ -33,6 +36,7 @@
 		//	Set Login Credentials for MMU Portal
 		$studentID = $_GET['student_id'];
 		$password = "Tasem0707@";
+		$token = "";
 	}
 	else
 	{
@@ -48,16 +52,33 @@
 	$url = "https://mmls.mmu.edu.my/checklogin";
 	
 	//	Data for Login POST
-	$data = array('stud_id' => $studentID, 'stud_pswrd' => $password);
+	$data = array('_token' => $token,'stud_id' => $studentID, 'stud_pswrd' => $password);
 	
 	//	Create cookie file
 	$cookie = tempnam("/cookie", "CURLCOOKIE");
 	
 	//	Connect to MMU PORTAL with cURL
 	$curl = curl_init($url);
+	curl_setopt($curl, CURLOPT_POST, FALSE);
+	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+	curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
+	curl_setopt($curl, CURLOPT_HEADER, FALSE);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);));
+	curl_setopt($curl, CURLOPT_COOKIEJAR, $cookie);
+	$result = curl_exec($curl);
+	
+	//	Get the token to login
+	$htmlDOM = str_get_html($result);
+	$ret = $htmlDOM->find('input[name=_token]');
+	echo $ret;
+	die("132");
+	
+	//	Connect to MMU PORTAL with cURL
+	$curl = curl_init($url);
 	curl_setopt($curl, CURLOPT_POST, TRUE);
 	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
-	curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) Ubuntu/10.04 Chromium/11.0.696.0 Chrome/11.0.696.0 Safari/534.24");
+	curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
 	curl_setopt($curl, CURLOPT_HEADER, FALSE);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
