@@ -78,7 +78,7 @@
 	echo $ret->value;
 	foreach ($ret as $rete)
 	{
-		echo $rete->value . "<br/>";
+		//echo $rete->value . "<br/>";
 	}
 	
 	die("132");
