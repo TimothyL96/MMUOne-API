@@ -21,6 +21,9 @@
 	//	Get Simple HTML DOM library
 	require_once '../library/html_dom.php';
 	
+	//	New Simple HTML DOM object
+	$htmlDOM = new simple_html_dom();
+	
 	//	Instantiate users object and retrieve connection
 	$db = new Database();
 	$conn = $db->connect();
@@ -69,7 +72,8 @@
 	$result = curl_exec($curl);
 	
 	//	Get the token to login
-	$htmlDOM = str_get_html($result);
+	//$htmlDOMObject = str_get_html($result);
+	$htmlDOM->load($result);
 	$ret = $htmlDOM->find('input[name=_token]');
 	print_r($ret);
 	die("132");
