@@ -71,7 +71,7 @@
 	//	Get the token to login
 	$htmlDOM = str_get_html($result);
 	$ret = $htmlDOM->find('input[name=_token]');
-	echo $ret;
+	print_r($ret);
 	die("132");
 	
 	//	Connect to MMU PORTAL with cURL
