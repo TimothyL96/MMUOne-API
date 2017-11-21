@@ -75,7 +75,7 @@
 	//$htmlDOMObject = str_get_html($result);
 	$htmlDOM->load($result, true, false);
 	$ret = $htmlDOM->find('input[name=_token]');
-	echo $ret->value
+	echo $ret->value;
 	foreach ($ret as $rete)
 	{
 		echo $rete->value . "<br/>";
