@@ -50,6 +50,9 @@
 	//	Data for Login POST
 	$data = array('userid' => $studentID, 'pwd' => $password);
 	
+	//	Create cookie file
+	$cookie = tempnam("/cookie", "CURLCOOKIE");
+	
 	//	Connect to MMU PORTAL with cURL
 	$curl = curl_init($url);
 	curl_setopt($curl, CURLOPT_POST, TRUE);
@@ -59,7 +62,22 @@
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+	curl_setopt($curl, CURLOPT_COOKIEJAR, $cookie);
 	$result = curl_exec($curl);
+	
+	//	Connect to MMU PORTAL with cURL
+	$curl = curl_init($url);
+	curl_setopt($curl, CURLOPT_POST, TRUE);
+	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+	curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.93 Safari/537.36");
+	curl_setopt($curl, CURLOPT_HEADER, FALSE);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+	curl_setopt($curl, CURLOPT_COOKIEFILE, $cookie);
+	$result = curl_exec($curl);
+	
+	//curl_setopt ($ch, CURLOPT_COOKIEFILE, $ckfile);
 	
 	//	Get any cURL error
 	curl_error($curl);
