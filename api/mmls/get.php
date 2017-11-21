@@ -52,9 +52,9 @@
 	};
 	
 	//	URL of MMU Portal
-	$url = "https://mmls.mmu.edu.my/checklogin";
+	$url = "https://mmls.mmu.edu.my/";
 	
-	//	Data for Login POST
+	//	Data to get Login Cookies
 	$data = array('_token' => $token,'stud_id' => $studentID, 'stud_pswrd' => $password);
 	
 	//	Create cookie file
@@ -78,6 +78,9 @@
 	print_r($result);
 	print_r($ret);
 	die("132");
+	
+	//	Set the URL for POST login
+	$url = "https://mmls.mmu.edu.my/checklogin";
 	
 	//	Connect to MMU PORTAL with cURL
 	$curl = curl_init($url);
