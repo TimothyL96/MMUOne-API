@@ -77,14 +77,13 @@
 	curl_setopt($curl, CURLOPT_COOKIEFILE, $cookie);
 	$result = curl_exec($curl);
 	
-	//curl_setopt ($ch, CURLOPT_COOKIEFILE, $ckfile);
 	
 	//	Get any cURL error
 	curl_error($curl);
 	$status = curl_getinfo($curl, CURLINFO_COOKIELIST); 
 	
 	//	Process the return value
-	echo $result;
+	$result;
 	
 	//	Close cUrl resource and free up system resources
 	curl_close($curl);
