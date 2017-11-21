@@ -75,7 +75,6 @@
 	//$htmlDOMObject = str_get_html($result);
 	$htmlDOM->load($result, true, false);
 	$ret = $htmlDOM->find('input[name=_token]');
-	print_r($result);
 	print_r($ret);
 	die("132");
 	
