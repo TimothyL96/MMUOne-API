@@ -75,7 +75,12 @@
 	//$htmlDOMObject = str_get_html($result);
 	$htmlDOM->load($result, true, false);
 	$ret = $htmlDOM->find('input[name=_token]');
-	echo $ret->value;
+	
+	foreach ($ret as $rete)
+	{
+		echo $rete->value . "<br/>";
+	}
+	
 	die("132");
 	
 	//	Set the URL for POST login
