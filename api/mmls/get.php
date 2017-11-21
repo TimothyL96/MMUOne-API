@@ -95,6 +95,7 @@
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
 	curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+	curl_setopt($curl, CURLOPT_COOKIEFILE, $cookie);
 	curl_setopt($curl, CURLOPT_COOKIEJAR, $cookie);
 	$result = curl_exec($curl);
 	
