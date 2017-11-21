@@ -64,7 +64,7 @@
 	curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
 	curl_setopt($curl, CURLOPT_HEADER, FALSE);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);));
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
 	curl_setopt($curl, CURLOPT_COOKIEJAR, $cookie);
 	$result = curl_exec($curl);
 	
