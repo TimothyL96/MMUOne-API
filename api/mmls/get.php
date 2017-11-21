@@ -84,6 +84,8 @@
 	//	Data to get Login Cookies
 	$data = array('_token' => $token,'stud_id' => $studentID, 'stud_pswrd' => $password);
 	
+	print_r($data);
+	
 	//	Connect to MMU PORTAL with cURL
 	$curl = curl_init($url);
 	curl_setopt($curl, CURLOPT_POST, TRUE);
