@@ -103,7 +103,7 @@
 	$htmlDOM->load($result, true, false);
 	
 	//	Find the desired input field
-	$inputContent = $htmlDOM->find('h6');
+	$inputContent = $htmlDOM->find('h6 div');
 	
 	//	Print the result
 	print_r($inputContent[0]);
