@@ -82,8 +82,7 @@
 	$inputFullName = $htmlDOM->find('#headerWrapper .floatL');
 	
 	//	Get the token value
-	echo $inputFullName[0]->plaintext;
-	$fullName = trim($inputFullName->plaintext);	//filter away Welcome,
+	$fullName = trim(substr(trim($inputFullName[0]->plaintext), 8, strlen($inputFullName[0]->plaintext) - 8));
 	
 	//	Process the return value
 	echo $fullName;
