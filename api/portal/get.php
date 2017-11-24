@@ -66,7 +66,7 @@
 	curl_error($curl); 
 	
 	//	Process the return value
-	$result;
+	echo $result;
 	
 	//	Close cUrl resource and free up system resources
 	curl_close($curl);

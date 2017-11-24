@@ -52,6 +52,7 @@
 	
 	//	Create cookie file
 	$cookie = tempnam("/cookie", "CURLCOOKIE");
+	//	Delete the file above later with unlink(filename)
 	
 	//	Connect to CamSYS with cURL
 	$curl = curl_init($url);
@@ -65,7 +66,7 @@
 	curl_setopt($curl, CURLOPT_COOKIEJAR, $cookie);
 	$result = curl_exec($curl);
 	
-	//	Logint to CamSYS with cURL
+	//	Login to CamSYS with cURL
 	$curl = curl_init($url);
 	curl_setopt($curl, CURLOPT_POST, TRUE);
 	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
