@@ -105,6 +105,10 @@
 	//	Find the desired input field
 	$inputContent = $htmlDOM->find('div[id=tabs-1] div.bulletinContentAll');
 	
+	//	Count array size
+	$contentSize = count($inputContent);
+	echo $contentSize;
+	
 	//	Print the result
 	echo trim(html_entity_decode($inputContent[1]->plaintext));
 	
