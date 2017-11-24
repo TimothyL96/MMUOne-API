@@ -99,9 +99,14 @@
 	curl_setopt($curl, CURLOPT_COOKIEFILE, $cookie);
 	$result = curl_exec($curl);
 	
+	//	Load the string to HTML DOM without stripping /r/n tags
+	$htmlDOM->load($result, true, false);
+	
+	//	Find the desired input field
+	$inputContent = $htmlDOM->find('h6');
+	
 	//	Print the result
-	echo "Hi, " . $fullName . '\n';
-	echo $result;
+	print_r($inputContent[0]);
 	
 	//	Close cUrl resource and free up system resources
 	curl_close($curl);
