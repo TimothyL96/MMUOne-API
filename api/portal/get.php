@@ -81,14 +81,27 @@
 	//	Find the desired input field
 	$inputFullName = $htmlDOM->find('#headerWrapper .floatL');
 	
-	//	Get the token value
+	//	Get the full name by filtering text at the front and back
 	$fullName = trim(substr(trim($inputFullName[0]->plaintext), 8, strripos($inputFullName[0]->plaintext, "(") - 8));
-	
-	//	Process the return value
-	echo $fullName;
 	
 	//	URL of MMU Portal's Bulletion Boarx
 	$url = "https://online.mmu.edu.my/bulletin.php";
+	
+	//	Connect to MMU PORTAL with cURL
+	$curl = curl_init($url);
+	curl_setopt($curl, CURLOPT_POST, FALSE);
+	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+	curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.93 Safari/537.36");
+	curl_setopt($curl, CURLOPT_HEADER, FALSE);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($curl, CURLOPT_COOKIEJAR, $cookie);
+	curl_setopt($curl, CURLOPT_COOKIEFILE, $cookie);
+	$result = curl_exec($curl);
+	
+	//	Print the result
+	echo "Hi, " . $fullName . '\n';
+	echo $result;
 	
 	//	Close cUrl resource and free up system resources
 	curl_close($curl);
