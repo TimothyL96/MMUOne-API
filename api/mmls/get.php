@@ -76,7 +76,10 @@
 	$inputToken = $htmlDOM->find('input[name=_token]');
 	
 	//	Get the token value
-	$token = $inputToken[0]->value;
+	if (!is_null($inputToken))
+	{
+		$token = $inputToken[0]->value;
+	}
 	
 	//	Set the URL for POST login
 	$url = "https://mmls.mmu.edu.my/checklogin";

@@ -18,6 +18,12 @@
 	//	Users object
 	require_once '../objects/users.php';
 	
+	//	Get Simple HTML DOM library
+	require_once '../library/html_dom.php';
+	
+	//	New Simple HTML DOM object
+	$htmlDOM = new simple_html_dom();
+	
 	//	Instantiate users object and retrieve connection
 	$db = new Database();
 	$conn = $db->connect();
@@ -65,8 +71,21 @@
 	//	Get any cURL error
 	curl_error($curl); 
 	
+	//	Check for id "headerWrapper" that will contain "Welcome, (Full Name)"
+	//	Load the string to HTML DOM without stripping /r/n tags
+	$htmlDom->load($result, true, false);
+	
+	//	Find the desired input field
+	$inputFullName = $htmlDOM->find('#headerWrapper');
+	
+	//	Get the token value
+	$fullName = trim($inputFullName->plaintext);	//filter away Welcome,
+	
 	//	Process the return value
-	echo $result;
+	echo $fullName;
+	
+	//	URL of MMU Portal's Bulletion Boarx
+	$url = "https://online.mmu.edu.my/bulletin.php";
 	
 	//	Close cUrl resource and free up system resources
 	curl_close($curl);
