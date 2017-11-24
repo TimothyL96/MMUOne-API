@@ -109,7 +109,7 @@
 	$contentSize = count($inputContent);
 	
 	//	Print the result
-	echo trim(html_entity_decode($inputContent[$contentSize - 1]->plaintext));
+	echo trim(htmlentities($inputContent[$contentSize - 1]->plaintext));
 	
 	//	Close cUrl resource and free up system resources
 	curl_close($curl);
