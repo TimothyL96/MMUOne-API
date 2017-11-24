@@ -79,7 +79,7 @@
 	$htmlDOM->load($result, true, false);
 	
 	//	Find the desired input field
-	$inputFullName = $htmlDOM->find('#headerWrapper');
+	$inputFullName = $htmlDOM->find('#headerWrapper .floatL');
 	
 	//	Get the token value
 	echo $inputFullName[0]->plaintext;
