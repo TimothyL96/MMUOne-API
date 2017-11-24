@@ -56,6 +56,9 @@
 	//	Data for Login POST
 	$data = array('form_loginUsername' => $studentID, 'form_loginPassword' => $password);
 	
+	//	Create cookie file
+	$cookie = tempnam("/cookie", "CURLCOOKIE");
+	
 	//	Connect to MMU PORTAL with cURL
 	$curl = curl_init($url);
 	curl_setopt($curl, CURLOPT_POST, TRUE);
