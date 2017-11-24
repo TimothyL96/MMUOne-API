@@ -82,7 +82,7 @@
 	$inputFullName = $htmlDOM->find('#headerWrapper');
 	
 	//	Get the token value
-	print_r($inputFullName[0]);
+	echo $inputFullName[0]->value;
 	$fullName = trim($inputFullName->plaintext);	//filter away Welcome,
 	
 	//	Process the return value
