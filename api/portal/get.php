@@ -72,11 +72,11 @@
 	$result = curl_exec($curl);
 	
 	//	Get any cURL error
-	//curl_error($curl); 
+	curl_error($curl); 
 	
 	//	Check for id "headerWrapper" that will contain "Welcome, (Full Name)"
 	//	Load the string to HTML DOM without stripping /r/n tags
-	$htmlDom->load($result, true, false);
+	$htmlDOM->load($result, true, false);
 	
 	//	Find the desired input field
 	$inputFullName = $htmlDOM->find('#headerWrapper');
