@@ -107,10 +107,9 @@
 	
 	//	Count array size
 	$contentSize = count($inputContent);
-	echo $contentSize;
 	
 	//	Print the result
-	echo trim(html_entity_decode($inputContent[154]->plaintext));
+	echo trim(html_entity_decode($inputContent[contentSize - 1]->plaintext));
 	
 	//	Close cUrl resource and free up system resources
 	curl_close($curl);
