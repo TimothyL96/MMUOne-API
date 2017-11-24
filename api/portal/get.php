@@ -103,10 +103,10 @@
 	$htmlDOM->load($result, true, false);
 	
 	//	Find the desired input field
-	$inputContent = $htmlDOM->find('h6 div');
+	$inputContent = $htmlDOM->find('h6');
 	
 	//	Print the result
-	print_r($inputContent);
+	print_r($inputContent[0]->plaintext);
 	
 	//	Close cUrl resource and free up system resources
 	curl_close($curl);
