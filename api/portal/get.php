@@ -106,7 +106,7 @@
 	$inputContent = $htmlDOM->find('div[id=tabs-1] div.bulletinContentAll');
 	
 	//	Print the result
-	echo htmlspecialchars($inputContent[0]->plaintext);
+	echo html_entity_decode($inputContent[0]->plaintext);
 	
 	//	Close cUrl resource and free up system resources
 	curl_close($curl);
