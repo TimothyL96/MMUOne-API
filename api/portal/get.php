@@ -106,7 +106,7 @@
 	$inputContent = $htmlDOM->find('h6 div');
 	
 	//	Print the result
-	print_r($inputContent[0]);
+	print_r($inputContent);
 	
 	//	Close cUrl resource and free up system resources
 	curl_close($curl);
