@@ -21,9 +21,6 @@
 	//	Portal object
 	require_once '../objects/portal.php';
 	
-	//	Get Simple HTML DOM library
-	require_once '../library/html_dom.php';
-	
 	//	Instantiate users object and retrieve connection
 	$db = new Database();
 	$conn = $db->connect();
@@ -64,6 +61,7 @@
 	$password = $users->password_mmu;
 		
 	//	Login to MMU Portal
+	//	Check if false
 	if (!$portal->login($studentID, $password))
 	{
 		//	Failed to login user to MMU Portal
@@ -75,4 +73,12 @@
 		die("Failed to login user to MMU Portal");
 	}
 	
+	//	Get bulletin
+	//	Check if false
+	//	$bulletin will be an array with 3 members that are array as well
+	if (!$bulletin = $portal->getBulletin())
+	{
+		
+	}
 	
+	//	serialize object to be reused later

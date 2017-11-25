@@ -8,9 +8,9 @@
 		private $bulletin2;
 		private $bulletin3;
 		private $bulletinPaged;
-		private $bulletinRetrievalCount1;
-		private $bulletinRetrievalCount2;
-		private $bulletinRetrievalCount3;
+		private $bulletinRetrievalCount1 = 1;
+		private $bulletinRetrievalCount2 = 1;
+		private $bulletinRetrievalCount3 = 1;
 		private $bulletinSize1;
 		private $bulletinSize2;
 		private $bulletinSize3;
@@ -27,6 +27,9 @@
 		
 		//	Include cURL function: curl(url, postRequest, data, cookie)
 		require_once '../objects/portal.php';
+	
+		//	Get Simple HTML DOM library
+		require_once '../library/html_dom.php';
 	
 		//	New Simple HTML DOM object
 		private $htmlDOM = new simple_html_dom();
@@ -107,36 +110,63 @@
 		
 		function getBulletin()
 		{
-			if (!empty($this->bulletin) && !empty($this->bulletin2) && !empty($this->bulletin3))
+			//	If bulletin1 is not empty means already retrieved before
+			if (!empty($this->bulletin1))
 			{
 				//	Proccess the bulletin to return the next page of bulletin
-				//$this->bulletinRetrievalCount
 				//	Check if bulletin is less than 10 means previously already returned all news
-				if ($this->bulletinSize1 < 10)
+				if ($this->bulletinSize1 < $this->bulletinRetrievalCount1 * 10)
 				{
 					$bulletinPaged1 = array();
 				}
 				else
 				{
-					
+					foreach ($this->bulletin1 as $key => $bulletinSingle)
+					{
+						array_push($bulletinPaged1, $bulletinSingle->plaintext);
+						array_splice($bulletinPaged1, 0, 1);
+						if ($key = 9)
+						{
+							break;
+						}
+					}
+					$this->bulletinRetrievalCount1++;
 				}
 				
-				if ($this->bulletinSize2 < 10)
+				if ($this->bulletinSize2 < $this->bulletinRetrievalCount2 * 10)
 				{
 					$bulletinPaged2 = array();
 				}
 				else
 				{
-					
+					foreach ($this->bulletin2 as $key => $bulletinSingle)
+					{
+						array_push($bulletinPaged2, $bulletinSingle->plaintext);
+						array_splice($bulletinPaged2, 0, 1);
+						if ($key = 9)
+						{
+							break;
+						}
+					}
+					$this->bulletinRetrievalCount2++;
 				}
 				
-				if ($this->bulletinSize3 < 10)
+				if ($this->bulletinSize3 < $this->bulletinRetrievalCount3 * 10)
 				{
 					$bulletinPaged3 = array();
 				}
 				else
 				{
-					
+					foreach ($this->bulletin3 as $key => $bulletinSingle)
+					{
+						array_push($bulletinPaged3, $bulletinSingle->plaintext);
+						array_splice($bulletinPaged3, 0, 1);
+						if ($key = 9)
+						{
+							break;
+						}
+					}
+					$this->bulletinRetrievalCount3++;
 				}
 				
 				//	Combine all bulletin tabs together as a multidimensional array
@@ -156,6 +186,10 @@
 			if ($this->curlResult[0] == "failed")
 			{
 				$this->error = $this->curlResult[1];
+				
+				//	Get bulletin failed
+				$this->error = 20602;
+				
 				return false;
 			}
 			else if ($this->curlResult[0] == "succeed")
@@ -174,43 +208,38 @@
 				$this->bulletinSize3 = count($this->bulletin3);
 					
 				//	Send the bulletin 10 by 10
-				if ($this->bulletinSize1 < 10)
+				$bulletinPaged1 = array();
+				foreach ($this->bulletin1 as $key => $bulletinSingle)
 				{
-					$bulletinPaged1 = array();
-					foreach($this->bulletin1 as $bulletinSingle)
+					array_push($bulletinPaged1, $bulletinSingle->plaintext);
+					array_splice($bulletinPaged1, 0, 1);
+					if ($key = 9)
 					{
-						array_push($bulletinPaged1, $bulletinSingle->plaintext);
+						break;
 					}
 				}
-				else
+			
+			
+				$bulletinPaged2 = array();
+				foreach ($this->bulletin2 as $key => $bulletinSingle)
 				{
-					
-				}
-				
-				if ($this->bulletinSize2 < 10)
-				{
-					$bulletinPaged2 = array();
-					foreach($this->bulletin2 as $bulletinSingle)
+					array_push($bulletinPaged2, $bulletinSingle->plaintext);
+					array_splice($bulletinPaged2, 0, 1);
+					if ($key = 9)
 					{
-						array_push($bulletinPaged2, $bulletinSingle->plaintext);
+						break;
 					}
 				}
-				else
+			
+				$bulletinPaged3 = array();
+				foreach ($this->bulletin3 as $key => $bulletinSingle)
 				{
-					
-				}
-				
-				if ($this->bulletinSize3 < 10)
-				{
-					$bulletinPaged3 = array();
-					foreach($this->bulletin3 as $bulletinSingle)
+					array_push($bulletinPaged3, $bulletinSingle->plaintext);
+					array_splice($bulletinPaged3, 0, 1);
+					if ($key = 9)
 					{
-						array_push($bulletinPaged3, $bulletinSingle->plaintext);
+						break;
 					}
-				}
-				else
-				{
-					
 				}
 				
 				//	Combine all bulletin tabs together as a multidimensional array
