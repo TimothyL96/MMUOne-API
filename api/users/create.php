@@ -34,6 +34,7 @@
 	{
 		//	Succeeded
 		//	Set values for message array
+		//	No code if succeeded
 		$users->message['status'] = "succeed";
 		$users->message['message'] = "User successfully registered";
 		

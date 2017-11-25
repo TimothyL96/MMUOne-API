@@ -190,7 +190,7 @@
 		function read()
 		{
 			//	Select all queries
-			$query = "SELECT full_name, student_id, email, password_mmu, faculty, campus, profile_pic, last_login, date_registered FROM " . $this->tableName . " ORDER BY full_name";
+			$query = "SELECT full_name, student_id, email, password_mmu, faculty, campus, profile_pic, last_login, date_registered FROM {$this->tableName} ORDER BY full_name";
 			
 			//	Prepare query statement
 			$stmt = $this->conn->prepare($query);
@@ -199,6 +199,26 @@
 			$stmt->execute();
 			
 			return $stmt;
+		}
+		
+		function readPasswordMMU()
+		{
+			//	Select password_mmu
+			$query = "SELECT password_mmu FROM {$this->tableName} WHERE student_id = ?";
+			
+			//	Prepare query statement
+			$stmt = $this->conn->prepare($query);
+			
+			//	Bind value for student ID
+			$stmt->bindParam(1, $this->student_id);
+			
+			//	Execute query
+			$stmt->execute();
+			
+			//	Get retrieved row
+			$row = $stmt->fetch(PDO::FETCH_ASSOC);
+			
+			$this->password_mmu = $row['password_mmu'];
 		}
 		
 		function getErrorText($errorCode = NULL)
