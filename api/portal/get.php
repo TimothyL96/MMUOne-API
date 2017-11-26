@@ -21,6 +21,12 @@
 	//	Portal object
 	require_once '../objects/portal.php';
 	
+	//	Get Simple HTML DOM library
+		require_once '../library/html_dom.php';
+	
+	//	New Simple HTML DOM object
+	$htmlDOM = new simple_html_dom();
+	
 	//	Instantiate users object and retrieve connection
 	$db = new Database();
 	$conn = $db->connect();
@@ -29,7 +35,7 @@
 	$users = new Users($conn);
 	
 	//	Set up Portal object
-	$portal = new Portal();
+	$portal = new Portal($htmlDOM);
 	
 	//	Check if Student ID provided
 	if (empty($_GET['student_id']))

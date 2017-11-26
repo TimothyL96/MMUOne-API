@@ -1,12 +1,13 @@
 <?php
 	class Portal
 	{
+		private $htmlDOM;
 		private $student_id;
 		private $password_mmu;
 		private $fullName;
 		private $bulletin1;
-		private $bulletin2;
 		private $bulletin3;
+		private $bulletin2;
 		private $bulletinPaged;
 		private $bulletinRetrievalCount1 = 1;
 		private $bulletinRetrievalCount2 = 1;
@@ -26,18 +27,14 @@
 		private $message = array();
 		
 		//	Include cURL function: curl(url, postRequest, data, cookie)
-		require_once '../objects/portal.php';
+		require_once '../objects/curl.php';
 	
-		//	Get Simple HTML DOM library
-		require_once '../library/html_dom.php';
-	
-		//	New Simple HTML DOM object
-		private $htmlDOM = new simple_html_dom();
+		
 	
 		//	Constructor
-		public function __construct()
+		public function __construct($htmlDOM)
 		{
-
+			$this->htmlDOM = $htmlDOM;
 		}
 		
 		//	Destructor
