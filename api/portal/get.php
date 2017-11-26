@@ -48,6 +48,9 @@
 		die("No student ID specified");	
 	}
 	
+	//	Set the student ID
+	$users->student_id = $_GET['student_id'];
+	
 	//	Retrieve user MMU IDM password to login to MMU Portal
 	$users->readPasswordMMU();
 	

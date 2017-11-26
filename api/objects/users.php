@@ -215,9 +215,6 @@
 			//	Execute query
 			$stmt->execute();
 			
-			echo 'hi ' . $query;
-			return;
-			
 			//	Get retrieved row
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
 			
