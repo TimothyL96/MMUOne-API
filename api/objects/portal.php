@@ -201,7 +201,7 @@
 				$this->bulletin1 = htmlentities($this->htmlDOM->find('div[id=tabs-1] div.bulletinContentAll'));
 				$this->bulletin2 = htmlentities($this->htmlDOM->find('div[id=tabs-2] div.bulletinContentAll'));
 				$this->bulletin3 = htmlentities($this->htmlDOM->find('div[id=tabs-3] div.bulletinContentAll'));
-				print_r($this->htmlDOM->find('div[id=tabs-1] div.bulletinContentAll'));return;
+				print_r($this->htmlDOM->find('div[id=tabs-2] div.bulletinContentAll'));return;
 				//	Count array size
 				$this->bulletinSize1 = count($this->bulletin1);
 				$this->bulletinSize2 = count($this->bulletin2);
