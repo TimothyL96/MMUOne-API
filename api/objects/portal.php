@@ -248,4 +248,14 @@
 				return $this->bulletinPaged;
 			}
 		}
+		
+		function getErrorText()
+		{
+			
+		}
+		
+		function echoMessage()
+		{
+			
+		}
 	}

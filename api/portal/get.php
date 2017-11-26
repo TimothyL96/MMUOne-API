@@ -65,7 +65,7 @@
 	if (!$portal->login($studentID, $password))
 	{
 		//	Failed to login user to MMU Portal
-		//	Set error (error code 20600)
+		//	Set error (error code 20601)
 		
 		//	Echo JSON message
 		
@@ -78,7 +78,14 @@
 	//	$bulletin will be an array with 3 members that are array as well
 	if (!$bulletin = $portal->getBulletin())
 	{
+		//	Failed to get bulletins from MMU Portal
+		//	Set error (error code 20602)
 		
+		//	Echo JSON message
+		
+		//	Kill
+		die("Failed to get bulletins from MMU Portal");
 	}
 	
 	//	serialize object to be reused later
+	echo serialize($portal);
