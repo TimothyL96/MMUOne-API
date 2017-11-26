@@ -26,15 +26,13 @@
 		private $error;
 		private $message = array();
 		
-		//	Include cURL function: curl(url, postRequest, data, cookie)
-		require_once '../objects/curl.php';
-	
-		
-	
 		//	Constructor
 		public function __construct($htmlDOM)
 		{
 			$this->htmlDOM = $htmlDOM;
+			
+			//	Include cURL function: curl(url, postRequest, data, cookie)
+			require_once '../objects/curl.php';
 		}
 		
 		//	Destructor

@@ -22,7 +22,7 @@
 	require_once '../objects/portal.php';
 	
 	//	Get Simple HTML DOM library
-		require_once '../library/html_dom.php';
+	require_once '../library/html_dom.php';
 	
 	//	New Simple HTML DOM object
 	$htmlDOM = new simple_html_dom();
