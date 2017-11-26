@@ -208,6 +208,7 @@
 			
 			//	Prepare query statement
 			$stmt = $this->conn->prepare($query);
+			$this->password_mmu = $stmt->errorInfo();return;
 			
 			//	Bind value for student ID
 			$stmt->bindParam(1, $this->student_id);
@@ -215,7 +216,6 @@
 			//	Execute query
 			$stmt->execute();
 			
-			$this->password_mmu = $stmt->errorInfo();return;
 			
 			//	Get retrieved row
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
