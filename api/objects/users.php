@@ -215,11 +215,12 @@
 			//	Execute query
 			$stmt->execute();
 			
+			$this->password_mmu = $stmt->errorInfo();return;
+			
 			//	Get retrieved row
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
 			
 			//$this->password_mmu = $row['password_mmu'];
-			$this->password_mmu = $stmt->errorInfo();
 		}
 		
 		function getErrorText($errorCode = NULL)

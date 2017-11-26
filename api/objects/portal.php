@@ -41,7 +41,10 @@
 		public function __destruct()
 		{
 			//	Close cURL resource and free up system resources
-			curl_close($this->curl);
+			if (!is_null($this->curl))
+			{
+				curl_close($this->curl);	
+			}
 		}
 		
 		function login($studentID, $passwordMMU)
