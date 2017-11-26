@@ -22,7 +22,7 @@
 		private $latestTitleOnAndroid;
 		private $loggedIn = false;
 		private $url;
-		private $cookie = tempnam("/cookie", "PORTAL_");	//unlink($cookie);
+		private $cookie;
 		private $error;
 		private $message = array();
 		
@@ -30,6 +30,8 @@
 		public function __construct($htmlDOM)
 		{
 			$this->htmlDOM = $htmlDOM;
+			
+			$this->cookie = tempnam("/cookie", "PORTAL_");	//unlink($cookie);
 			
 			//	Include cURL function: curl(url, postRequest, data, cookie)
 			require_once '../objects/curl.php';
