@@ -198,9 +198,9 @@
 				$this->htmlDOM->load($this->curlResult[1], true, false);
 				
 				//	Find the desired input field
-				$this->bulletin1 = htmlentities($this->htmlDOM->find('div[id=tabs-1] div.bulletinContentAll'));
-				$this->bulletin2 = htmlentities($this->htmlDOM->find('div[id=tabs-2] div.bulletinContentAll'));
-				$this->bulletin3 = htmlentities($this->htmlDOM->find('div[id=tabs-3] div.bulletinContentAll'));
+				$this->bulletin1 = htmlentities($this->htmlDOM->find('div[id=tabs-1] div.bulletinContentAll')->plaintext);
+				$this->bulletin2 = htmlentities($this->htmlDOM->find('div[id=tabs-2] div.bulletinContentAll')->plaintext);
+				$this->bulletin3 = htmlentities($this->htmlDOM->find('div[id=tabs-3] div.bulletinContentAll')->plaintext);
 				
 				//	Count array size
 				$this->bulletinSize1 = count($this->bulletin1);
