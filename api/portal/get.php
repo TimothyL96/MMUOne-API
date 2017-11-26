@@ -81,7 +81,7 @@
 		//	Kill
 		die("Failed to login user to MMU Portal");
 	}
-	echo $portal->getBulletin();
+	print_r($portal->getBulletin());
 	die();
 	//	Get bulletin
 	//	Check if false
