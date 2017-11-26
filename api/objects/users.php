@@ -218,7 +218,7 @@
 			if (!$stmt->execute())
 			{
 				$this->password_mmu = $stmt->errorInfo[1];
-				return false;
+				return;
 			}
 			
 			//	Get retrieved row
