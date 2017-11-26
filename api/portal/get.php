@@ -97,4 +97,4 @@
 	}
 	
 	//	serialize object to be reused later
-	echo serialize($portal);
+	print_r($bulletin);
