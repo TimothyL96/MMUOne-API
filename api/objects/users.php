@@ -213,9 +213,13 @@
 			$stmt->bindParam(1, $this->student_id);
 			
 			//	Execute query
-			$stmt->execute();
-			
-			$this->password_mmu = $this->conn->errorInfo();return;
+			//$stmt->execute();
+			//	Execute query
+			if (!$stmt->execute())
+			{
+				$this->password_mmu = $stmt->errorInfo[1];
+				return false;
+			}
 			
 			//	Get retrieved row
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
