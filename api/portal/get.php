@@ -61,7 +61,8 @@
 		//	Kill
 		die("Failed to get user's MMU password");
 	}
-	
+	print_r($users->password_mmu);
+	die();
 	//	Set Login Credentials for MMU Portal
 	$studentID = $_GET['student_id'];
 	$password = $users->password_mmu;
