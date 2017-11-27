@@ -100,7 +100,7 @@
 	{
 		foreach ($news as $key => $new)
 		{
-			echo $key . ": " . html_entity_decode($new->plaintext) . '\n';	
+			echo $key . ": " . html_entity_decode($new) . '\n';	
 		}
 	}
 	//	serialize object to be reused later
