@@ -212,7 +212,7 @@
 				foreach ($this->bulletin1 as $key => $bulletinSingle)
 				{
 					array_push($bulletinPaged1, $bulletinSingle->plaintext);
-					array_splice($bulletinPaged1, 0, 1);
+					array_splice($this->bulletin1, 0, 1);
 					if ($key = 9)
 					{
 						break;
@@ -224,7 +224,7 @@
 				foreach ($this->bulletin2 as $key => $bulletinSingle)
 				{
 					array_push($bulletinPaged2, $bulletinSingle->plaintext);
-					array_splice($bulletinPaged2, 0, 1);
+					array_splice($this->bulletin2, 0, 1);
 					if ($key = 9)
 					{
 						break;
@@ -235,7 +235,7 @@
 				foreach ($this->bulletin3 as $key => $bulletinSingle)
 				{
 					array_push($bulletinPaged3, $bulletinSingle->plaintext);
-					array_splice($bulletinPaged3, 0, 1);
+					array_splice($this->bulletin3, 0, 1);
 					if ($key = 9)
 					{
 						break;
