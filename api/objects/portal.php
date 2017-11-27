@@ -206,14 +206,13 @@
 				$this->bulletinSize1 = count($this->bulletin1);
 				$this->bulletinSize2 = count($this->bulletin2);
 				$this->bulletinSize3 = count($this->bulletin3);
-					print_r($this->bulletinSize1);
+
 				//	Send the bulletin 10 by 10
 				$bulletinPaged1 = array();
 				foreach ($this->bulletin1 as $key => $bulletinSingle)
 				{
-					echo $key . '\n';
 					array_push($bulletinPaged1, $bulletinSingle->plaintext);
-					array_splice($this->bulletin1, 0, 1);
+//					array_splice($this->bulletin1, 0, 1);
 					if ($key = 9)
 					{
 						break;
