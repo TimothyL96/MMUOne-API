@@ -81,8 +81,7 @@
 		//	Kill
 		die("Failed to login user to MMU Portal");
 	}
-	print_r(htmlentities($portal->getBulletin()[0]->plaintext));
-	die();
+	
 	//	Get bulletin
 	//	Check if false
 	//	$bulletin will be an array with 3 members that are array as well
@@ -97,5 +96,12 @@
 		die("Failed to get bulletins from MMU Portal");
 	}
 	
+	foreach($bulletin as $news)
+	{
+		foreach ($news as $new)
+		{
+			echo html_entity_decode($new->plaintext) . '\n';	
+		}
+	}
 	//	serialize object to be reused later
-	print_r($bulletin);
+	//print_r($bulletin);
