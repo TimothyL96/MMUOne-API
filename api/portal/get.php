@@ -98,9 +98,9 @@
 	
 	foreach($bulletin as $news)
 	{
-		foreach ($news as $new)
+		foreach ($news as $key => $new)
 		{
-			echo html_entity_decode($new->plaintext) . '\n';	
+			echo $key . ": " . html_entity_decode($new->plaintext) . '\n';	
 		}
 	}
 	//	serialize object to be reused later
