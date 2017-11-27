@@ -218,7 +218,8 @@
 						break;
 					}
 				}
-			
+				print_r($bulletinPaged1);
+				return 1;
 			
 				$bulletinPaged2 = array();
 				foreach ($this->bulletin2 as $key => $bulletinSingle)
