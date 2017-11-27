@@ -206,7 +206,7 @@
 				$this->bulletinSize1 = count($this->bulletin1);
 				$this->bulletinSize2 = count($this->bulletin2);
 				$this->bulletinSize3 = count($this->bulletin3);
-					print_r($this->bulletin1);
+					print_r($this->bulletinSize1);
 				//	Send the bulletin 10 by 10
 				$bulletinPaged1 = array();
 				foreach ($this->bulletin1 as $key => $bulletinSingle)
