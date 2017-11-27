@@ -81,7 +81,7 @@
 		//	Kill
 		die("Failed to login user to MMU Portal");
 	}
-	print_r(html_entity_decode($portal->getBulletin()[0]->plaintext));
+	print_r(htmlentities($portal->getBulletin()[0]->plaintext));
 	die();
 	//	Get bulletin
 	//	Check if false
