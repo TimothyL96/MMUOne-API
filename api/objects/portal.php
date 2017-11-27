@@ -213,20 +213,18 @@
 				{
 					array_push($bulletinPaged1, $bulletinSingle->plaintext);
 //					array_splice($this->bulletin1, 0, 1);
-					if ($key = 9)
+					if ($key == 9)
 					{
 						break;
 					}
 				}
-				print_r($bulletinPaged1);
-				return 1;
 			
 				$bulletinPaged2 = array();
 				foreach ($this->bulletin2 as $key => $bulletinSingle)
 				{
 					array_push($bulletinPaged2, $bulletinSingle->plaintext);
 					array_splice($this->bulletin2, 0, 1);
-					if ($key = 9)
+					if ($key == 9)
 					{
 						break;
 					}
@@ -237,7 +235,7 @@
 				{
 					array_push($bulletinPaged3, $bulletinSingle->plaintext);
 					array_splice($this->bulletin3, 0, 1);
-					if ($key = 9)
+					if ($key == 9)
 					{
 						break;
 					}
