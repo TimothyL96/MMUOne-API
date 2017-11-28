@@ -195,7 +195,7 @@
 			else if ($this->curlResult[0] == "succeed")
 			{
 				//	Load the string to HTML DOM without stripping /r/n tags
-				$this->htmlDOM->load($this->curlResult[1]);
+				$this->htmlDOM->load($this->curlResult[1], true, false);
 				
 				//	Find the desired input field
 				$this->bulletin1 = $this->htmlDOM->find('div[id=tabs-1] div.bulletinContentAll');
