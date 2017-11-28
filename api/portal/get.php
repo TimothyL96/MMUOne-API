@@ -105,4 +105,4 @@
 	}
 	
 	//	serialize object to be reused later
-	print_r(serialize($bulletin));
+	print_r(serialize($portal));
