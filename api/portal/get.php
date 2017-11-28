@@ -96,13 +96,13 @@
 		die("Failed to get bulletins from MMU Portal");
 	}
 	
-	foreach($bulletin as $news)
+	//foreach($bulletin as $news)
 	{
-		foreach ($news as $key => $new)
+		//foreach ($news as $key => $new)
 		{
-			echo $key . ": " . html_entity_decode($new) . '\n';	
+			//echo $key . ": " . html_entity_decode($new) . '\n';	
 		}
 	}
 	
 	//	serialize object to be reused later
-	print_r($bulletin);
+	print_r(serialize($bulletin));
