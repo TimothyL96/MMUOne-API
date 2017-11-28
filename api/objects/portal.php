@@ -212,7 +212,7 @@
 				foreach ($this->bulletin1 as $key => $bulletinSingle)
 				{
 					array_push($bulletinPaged1, $bulletinSingle->plaintext);
-//					array_splice($this->bulletin1, 0, 1);
+					array_splice($this->bulletin1, 0, 1);
 					if ($key == 9)
 					{
 						break;

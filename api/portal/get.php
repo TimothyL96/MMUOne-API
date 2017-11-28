@@ -103,5 +103,6 @@
 			echo $key . ": " . html_entity_decode($new) . '\n';	
 		}
 	}
+	
 	//	serialize object to be reused later
-	//print_r($bulletin);
+	print_r($bulletin);
