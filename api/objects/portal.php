@@ -199,8 +199,8 @@
 				
 				//	Find the desired input field
 				$this->bulletin1 = $this->htmlDOM->find('div[id=tabs-1] div.bulletinContentAll');
-				$this->bulletin2 = $this->htmlDOM->find('div[id=tabs-2] div.bulletinContentAll');
-				$this->bulletin3 = $this->htmlDOM->find('div[id=tabs-3] div.bulletinContentAll');
+				//$this->bulletin2 = $this->htmlDOM->find('div[id=tabs-2] div.bulletinContentAll');
+				//$this->bulletin3 = $this->htmlDOM->find('div[id=tabs-3] div.bulletinContentAll');
 
 				//	Count array size
 				$this->bulletinSize1 = count($this->bulletin1);
