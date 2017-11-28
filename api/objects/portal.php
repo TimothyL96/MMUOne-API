@@ -6,8 +6,8 @@
 		private $password_mmu;
 		private $fullName;
 		private $bulletin1;
-		private $bulletin3;
 		private $bulletin2;
+		private $bulletin3;
 		private $bulletinPaged;
 		private $bulletinRetrievalCount1 = 1;
 		private $bulletinRetrievalCount2 = 1;
@@ -125,7 +125,7 @@
 					{
 						array_push($bulletinPaged1, $bulletinSingle->plaintext);
 						array_splice($bulletinPaged1, 0, 1);
-						if ($key = 9)
+						if ($key == 9)
 						{
 							break;
 						}
@@ -143,7 +143,7 @@
 					{
 						array_push($bulletinPaged2, $bulletinSingle->plaintext);
 						array_splice($bulletinPaged2, 0, 1);
-						if ($key = 9)
+						if ($key == 9)
 						{
 							break;
 						}
@@ -161,7 +161,7 @@
 					{
 						array_push($bulletinPaged3, $bulletinSingle->plaintext);
 						array_splice($bulletinPaged3, 0, 1);
-						if ($key = 9)
+						if ($key == 9)
 						{
 							break;
 						}
@@ -215,7 +215,7 @@
 					array_splice($this->bulletin1, 0, 1);
 					if ($key == 9)
 					{
-						break;
+						//break;
 					}
 				}
 			
