@@ -210,6 +210,8 @@
 						//break;
 					}
 				}
+				
+				print_r($this->bulletinPaged);
 					
 				return $this->bulletinPaged;
 			}
