@@ -6,7 +6,7 @@
 		private $password_mmu;
 		private $fullName;
 		private $bulletin;
-		private $bulletinPaged;
+		private $bulletinPaged = array();
 		private $bulletinRetrievalCount = 1;
 		private $bulletinSize;
 		private $curl;
@@ -194,7 +194,6 @@
 				
 				//	Find the desired input field
 				$this->bulletin = $this->htmlDOM->find("div[id=tabs-{$tab}] div.bulletinContentAll");
-				print_r($this->bulletin[0]->plaintext);
 
 				//	Count array size
 				$this->bulletinSize = count($this->bulletin);
