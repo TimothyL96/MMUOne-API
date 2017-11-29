@@ -205,7 +205,7 @@
 					array_splice($this->bulletin, 0, 1);
 					if ($key == 9)
 					{
-						//break;
+						break;
 					}
 				}
 					
