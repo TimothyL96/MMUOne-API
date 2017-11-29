@@ -199,13 +199,13 @@
 				
 				//	Find the desired input field
 				$this->bulletin1 = $this->htmlDOM->find('div[id=tabs-1] div.bulletinContentAll');
-				$this->bulletin2 = $this->htmlDOM->find('div[id=tabs-2] div.bulletinContentAll');
-				$this->bulletin3 = $this->htmlDOM->find('div[id=tabs-3] div.bulletinContentAll');
+				//$this->bulletin2 = $this->htmlDOM->find('div[id=tabs-2] div.bulletinContentAll');
+				//$this->bulletin3 = $this->htmlDOM->find('div[id=tabs-3] div.bulletinContentAll');
 
 				//	Count array size
 				$this->bulletinSize1 = count($this->bulletin1);
-				$this->bulletinSize2 = count($this->bulletin2);
-				$this->bulletinSize3 = count($this->bulletin3);
+				//$this->bulletinSize2 = count($this->bulletin2);
+				//$this->bulletinSize3 = count($this->bulletin3);
 
 				//	Send the bulletin 10 by 10
 				$bulletinPaged1 = array();
@@ -218,7 +218,7 @@
 						break;
 					}
 				}
-			
+			/*
 				$bulletinPaged2 = array();
 				foreach ($this->bulletin2 as $key => $bulletinSingle)
 				{
@@ -240,9 +240,10 @@
 						break;
 					}
 				}
-				
+				*/
 				//	Combine all bulletin tabs together as a multidimensional array
-				$this->bulletinPaged = array($bulletinPaged1, $bulletinPaged2, $bulletinPaged3);
+				//$this->bulletinPaged = array($bulletinPaged1, $bulletinPaged2, $bulletinPaged3);
+				$this->bulletinPaged = array($bulletinPaged1);
 					
 				return $this->bulletinPaged;
 			}
