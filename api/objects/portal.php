@@ -194,13 +194,13 @@
 				
 				//	Find the desired input field
 				$this->bulletin = $this->htmlDOM->find("div[id=tabs-{$tab}] div.bulletinContentAll");
-				print_r($this->bulletin);
+				print_r($this->bulletin[0]);
 
 				//	Count array size
 				$this->bulletinSize = count($this->bulletin);
 
 				//	Send the bulletin 10 by 10
-				foreach ($this->bulletin[0] as $key => $bulletinSingle)
+				foreach ($this->bulletin as $key => $bulletinSingle)
 				{
 					array_push($this->bulletinPaged, $bulletinSingle->plaintext);
 					array_splice($this->bulletin, 0, 1);
