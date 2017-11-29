@@ -99,7 +99,7 @@
 	
 	foreach($bulletin as $news)
 	{
-		//echo $key . ": " . html_entity_decode($news) . '\n';	
+		echo $key . ": " . html_entity_decode($news) . '\n';	
 	}
 	
 	//	serialize object to be reused later
