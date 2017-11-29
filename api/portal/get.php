@@ -85,7 +85,8 @@
 	//	Get bulletin
 	//	Check if false
 	//	$bulletin will be an array with 3 members that are array as well
-	if (!$bulletin = $portal->getBulletin())
+	$tab = 1;
+	if (!$bulletin = $portal->getBulletin($tab))
 	{
 		//	Failed to get bulletins from MMU Portal
 		//	Set error (error code 20602)
@@ -98,10 +99,7 @@
 	
 	foreach($bulletin as $news)
 	{
-		foreach ($news as $key => $new)
-		{
-			echo $key . ": " . html_entity_decode($new) . '\n';	
-		}
+		echo $key . ": " . html_entity_decode($news) . '\n';	
 	}
 	
 	//	serialize object to be reused later
