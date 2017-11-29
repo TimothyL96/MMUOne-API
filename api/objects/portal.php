@@ -194,7 +194,7 @@
 				
 				//	Find the desired input field
 				$this->bulletin = $this->htmlDOM->find("div[id=tabs-{$tab}] div.bulletinContentAll");
-				print_r($this->bulletin[0]);
+				print_r($this->bulletin[0]->plaintext);
 
 				//	Count array size
 				$this->bulletinSize = count($this->bulletin);
