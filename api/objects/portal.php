@@ -7,9 +7,7 @@
 		private $fullName;
 		private $bulletin;
 		private $bulletinPaged;
-		private $bulletinRetrievalCount1 = 1;
-		private $bulletinRetrievalCount2 = 1;
-		private $bulletinRetrievalCount3 = 1;
+		private $bulletinRetrievalCount = 1;
 		private $bulletinSize;
 		private $curl;
 		private $postRequest;
@@ -196,6 +194,7 @@
 				
 				//	Find the desired input field
 				$this->bulletin = $this->htmlDOM->find("div[id=tabs-{$tab}] div.bulletinContentAll");
+				print_r($this->bulletin);
 
 				//	Count array size
 				$this->bulletinSize = count($this->bulletin);
@@ -210,8 +209,6 @@
 						//break;
 					}
 				}
-				
-				print_r($this->bulletinPaged);
 					
 				return $this->bulletinPaged;
 			}
