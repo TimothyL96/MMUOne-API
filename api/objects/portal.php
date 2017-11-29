@@ -203,7 +203,7 @@
 				//	Send the bulletin 10 by 10
 				foreach ($this->bulletin as $key => $bulletinSingle)
 				{
-					array_push($bulletinPaged, $bulletinSingle->plaintext);
+					array_push($this->bulletinPaged, $bulletinSingle->plaintext);
 					array_splice($this->bulletin, 0, 1);
 					if ($key == 9)
 					{
