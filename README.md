@@ -1,9 +1,9 @@
 # MMUOne-API
-##### This is a web API for MMU One Android Application
-_Not an Android Application_
+##### This is the web API for MMU One Android Application
+_Android Application Repository: `https://github.com/ttimt/MMUOne`_
 
 - Connect to database at VPS Linux server for the MMU One Android application.
 - Data passed from API server is of type JSON.
 - POST and GET
 
-PHP, JSON, SQL, JavaScript
+Languages: PHP, JSON, MySQL, JavaScript

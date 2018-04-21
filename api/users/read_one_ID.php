@@ -42,18 +42,18 @@
 	
 	//	Create array
 	$users_array = array(
-		"full_name" => $users->fullname
-		"student_id" => $users->student_id
-		"email" => $users->email
-		"password_mmuone" => $users->password_mmuone
-		"password_mmu" => $users->password_mmu
-		"faculty" => $users->faculty
-		"campus" => $users->campus
-		"profile_pic" => $users->profile_pic
-		"last_login" => $users->last_login
+		"full_name" => $users->full_name,
+		"student_id" => $users->student_id,
+		"email" => $users->email,
+		"password_mmuone" => $users->password_mmuone,
+		"password_mmu" => $users->password_mmu,
+		"faculty" => $users->faculty,
+		"campus" => $users->campus,
+		"profile_pic" => $users->profile_pic,
+		"last_login" => $users->last_login,
 		"date_registered" => $users->date_registered
 		);
 	
-	//	Echo is JSON format
+	//	Echo in JSON format
 	$users->message['status'] = "succeed";
 	$users->message['message'] = json_encode($users_array);

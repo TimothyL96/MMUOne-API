@@ -1,225 +1,119 @@
 <?php
-	class Portal
+	/**
+	 * Created by PhpStorm.
+	 * User: Timothy
+	 * Date: 29/3/2018
+	 * Time: 5:01 PM
+	 */
+
+	class portal
 	{
-		private $htmlDOM;
-		private $student_id;
-		private $password_mmu;
-		private $fullName;
-		private $bulletin;
-		private $bulletinPaged = array();
-		private $bulletinRetrievalCount = 1;
-		private $bulletinSize;
-		private $curl;
-		private $postRequest;
-		private $data = array();
-		private $curlResult;
-		private $latestTitleOnAndroid;
-		private $loggedIn = false;
-		private $url;
-		private $cookie;
-		private $error;
-		private $message = array();
-		
-		//	Constructor
-		public function __construct($htmlDOM)
+		//	Members for connection and table name
+		private $conn;
+		private $tableName = "portal";
+
+		//	Members for columns in the table "Portal"
+		public $hash;
+
+		/**
+		 * Portal constructor. Get database connection and put in the private class member for connection
+		 *
+		 * @param $db
+		 */
+		public function __construct($db)
 		{
-			$this->htmlDOM = $htmlDOM;
-			
-			$this->cookie = tempnam("/cookie", "PORTAL_");	//unlink($cookie);
-			
-			//	Include cURL function: curl(url, postRequest, data, cookie)
-			require_once '../objects/curl.php';
+			//	Retrieve database connection
+			$this->conn = $db;
 		}
-		
-		//	Destructor
+
+		/**
+		 * Destructor
+		 */
 		public function __destruct()
 		{
-			//	Close cURL resource and free up system resources
-			if (!is_null($this->curl))
-			{
-				curl_close($this->curl);	
-			}
+
 		}
-		
-		function login($studentID, $passwordMMU)
+
+		function getHash($student_id, $tab)
 		{
-			//	Login user
-			//	Session ends when browser ends
-			//	Get student ID and MMU password
-			$this->student_id = $studentID;
-			$this->password_mmu = $passwordMMU;
-			
-			//	URL of MMU Portal login
-			$this->url = "https://online.mmu.edu.my/index.php";
-			
-			//	Data for Login POST
-			$data = array('form_loginUsername' => $this->student_id, 'form_loginPassword' => $this->password_mmu);
-			
-			//	It is a POST request
-			$this->postRequest = true;
-			
-			$this->curlResult = curl($this->curl, $this->url, $this->postRequest, $data, $this->cookie);
-			
-			if ($this->curlResult[0] == "failed")
+			//	Select hash of given tab of specific student
+			$query = "SELECT hash FROM {$this->tableName} WHERE tab = :tab AND student_id = :student_id";
+
+			//	Prepare query statement
+			$stmt = $this->conn->prepare($query);
+
+			//	Bind parameters
+			$stmt->bindParam(':tab', $tab);
+			$stmt->bindParam(':student_id', $student_id);
+
+			//	Execute query
+			if (!$stmt->execute())
 			{
-				//	log in failed
-				$this->error = 20600;
-				
 				return false;
 			}
-			else if ($this->curlResult[0] == "succeed")
+
+			//	Get retrieved row
+			$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			$this->hash = $row['hash'];
+			
+			//	Store result
+			return TRUE;
+		}
+
+		function updateHash($student_id, $tab, $hash)
+		{
+			//	Update query
+			$query = "UPDATE {$this->tableName} SET hash = :hash WHERE tab = :tab AND student_id = :student_id";
+
+			//	Prepare query statement
+			$stmt = $this->conn->prepare($query);
+
+			//	Sanitize
+			$student_id = htmlspecialchars(strip_tags($student_id));
+			$tab = htmlspecialchars(strip_tags($tab));
+			$hash = htmlspecialchars(strip_tags($hash));
+
+			//	Bind new values
+			$stmt->bindParam(':student_id', $student_id);
+			$stmt->bindParam(':tab', $tab);
+			$stmt->bindParam(':hash', $hash);
+
+			//	Execute query
+			if ($stmt->execute())
 			{
-				$this->loggedIn = true;
 				return true;
 			}
-		}
-		
-		function getFullName()
-		{
-			if (!$this->loggedIn)
-			{
-				//	Not logged in
-				$this->error = 20601;
-				
-				return false;
-			}
-			
-			if (!empty($this->fullName))
-			{
-				return $this->fullName;
-			}
-			
-			//	Check for id "headerWrapper" that will contain "Welcome, (Full Name)"
-			//	Load the string to HTML DOM without stripping /r/n tags
-			$this->htmlDOM->load($this->curlResult[1], true, false);
-			
-			//	Find the desired input field
-			$inputFullName = $this->htmlDOM->find('#headerWrapper .floatL');
-			
-			//	Get the full name by filtering text at the front and back
-			$this->fullName = trim(substr(trim($inputFullName[0]->plaintext), 8, strripos($inputFullName[0]->plaintext, "(") - 8));
-			
-			return $this->fullName;
-		}
-		
-		//	$tab = 1 2 or 3
-		function getBulletin($tab)
-		{
-			//	If bulletin1 is not empty means already retrieved before
-			if (!empty($this->bulletin))
-			{
-				//	Proccess the bulletin to return the next page of bulletin
-				//	Check if bulletin is less than 10 means previously already returned all news
-				if ($this->bulletinSize1 < $this->bulletinRetrievalCount1 * 10)
-				{
-					$bulletinPaged1 = array();
-				}
-				else
-				{
-					foreach ($this->bulletin1 as $key => $bulletinSingle)
-					{
-						array_push($bulletinPaged1, $bulletinSingle->plaintext);
-						array_splice($bulletinPaged1, 0, 1);
-						if ($key == 9)
-						{
-							break;
-						}
-					}
-					$this->bulletinRetrievalCount1++;
-				}
-				
-				if ($this->bulletinSize2 < $this->bulletinRetrievalCount2 * 10)
-				{
-					$bulletinPaged2 = array();
-				}
-				else
-				{
-					foreach ($this->bulletin2 as $key => $bulletinSingle)
-					{
-						array_push($bulletinPaged2, $bulletinSingle->plaintext);
-						array_splice($bulletinPaged2, 0, 1);
-						if ($key == 9)
-						{
-							break;
-						}
-					}
-					$this->bulletinRetrievalCount2++;
-				}
-				
-				if ($this->bulletinSize3 < $this->bulletinRetrievalCount3 * 10)
-				{
-					$bulletinPaged3 = array();
-				}
-				else
-				{
-					foreach ($this->bulletin3 as $key => $bulletinSingle)
-					{
-						array_push($bulletinPaged3, $bulletinSingle->plaintext);
-						array_splice($bulletinPaged3, 0, 1);
-						if ($key == 9)
-						{
-							break;
-						}
-					}
-					$this->bulletinRetrievalCount3++;
-				}
-				
-				//	Combine all bulletin tabs together as a multidimensional array
-				$this->bulletinPaged = array($bulletinPaged1, $bulletinPaged2, $bulletinPaged3);
-				
-				return $this->bulletinPaged;
-			}
-			
-			//	Get all the bulletin news
-			//	URL of MMU Portal's Bulletion Boarx
-			$this->url = "https://online.mmu.edu.my/bulletin.php";
-			
-			$this->postRequest = false;
-			
-			$this->curlResult = curl($this->curl, $this->url, $this->postRequest, $this->data, $this->cookie);
-			
-			if ($this->curlResult[0] == "failed")
-			{
-				$this->error = $this->curlResult[1];
-				
-				//	Get bulletin failed
-				$this->error = 20602;
-				
-				return false;
-			}
-			else if ($this->curlResult[0] == "succeed")
-			{
-				//	Load the string to HTML DOM without stripping /r/n tags
-				$this->htmlDOM->load($this->curlResult[1], true, false);
-				
-				//	Find the desired input field
-				$this->bulletin = $this->htmlDOM->find("div[id=tabs-{$tab}] div.bulletinContentAll");
 
-				//	Count array size
-				$this->bulletinSize = count($this->bulletin);
+			return false;
+		}
 
-				//	Send the bulletin 10 by 10
-				foreach ($this->bulletin as $key => $bulletinSingle)
-				{
-					array_push($this->bulletinPaged, $bulletinSingle->plaintext);
-					array_splice($this->bulletin, 0, 1);
-					if ($key == 9)
-					{
-						break;
-					}
-				}
-					
-				return $this->bulletinPaged;
+		function updateTable($student_id, $tab, $data, $hash)
+		{
+			//	Update data and hash
+			$query = "UPDATE {$this->tableName} SET data = :data, hash = :hash WHERE tab = :tab AND student_id = :student_id";
+
+			//	Prepare query statement
+			$stmt = $this->conn->prepare($query);
+
+			//	Sanitize
+			$student_id = htmlspecialchars(strip_tags($student_id));
+			$tab = htmlspecialchars(strip_tags($tab));
+			$data = htmlspecialchars(strip_tags($data));
+			$hash = htmlspecialchars(strip_tags($hash));
+
+			//	Bind new values
+			$stmt->bindParam(':student_id', $student_id);
+			$stmt->bindParam(':tab', $tab);
+			$stmt->bindParam(':data', $data);
+			$stmt->bindParam(':hash', $hash);
+
+			//	Execute query
+			if ($stmt->execute())
+			{
+				return true;
 			}
-		}
-		
-		function getErrorText()
-		{
-			
-		}
-		
-		function echoMessage()
-		{
-			
+
+			return false;
 		}
 	}

@@ -14,6 +14,7 @@
 			}
 			catch (PDOException $e)
 			{
+				//	TODO SEND ERROR MESSAGE
 				echo "Connection failed: " . $e->getMessage();
 			}
 

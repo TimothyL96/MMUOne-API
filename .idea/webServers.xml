@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="795d543b-1a13-4b64-a1a3-08e1d2d1f852" name="MMU One API Development" url="https://www.mmuone.com">
+        <fileTransfer host="139.59.127.87" port="22" privateKey="E:\CS\privatekey.ppk" rootFolder="/var/www/MMUOne-API/" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

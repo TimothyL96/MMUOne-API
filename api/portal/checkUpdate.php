@@ -1,0 +1,62 @@
+<?php
+	/**
+	 * Created by PhpStorm.
+	 * User: Timothy
+	 * Date: 29/3/2018
+	 * Time: 12:06 AM
+	 */
+
+	//	Header
+	header("Access-Control-Allow-Origin: *");
+	header("Access-Control-Allow-Headers: access");
+	header("Access-Control-Allow-Methods: GET");
+	header("Access-Control-Allow-Credentials: true");
+	header('Content-Type: application/json');
+
+	//	Connection
+	require_once '../config/connection.php';
+
+	//	Users object
+	require_once '../objects/users.php';
+
+	//	Portal object
+	require_once '../objects/portal.php';
+
+	//	Instantiate users object and retrieve connection
+	$db = new Database();
+	$conn = $db->connect();
+
+	//	Set up Portal object
+	$portal = new Portal($conn);
+
+	//	Get $_GET data
+	//	Check if tab provided
+	if (empty($_GET['tab']))
+	{
+		//	TODO Set error
+
+		//	Echo JSON message
+
+		//	Kill
+		die("No tab provided");
+	}
+	$tab = $_GET['tab'];
+
+	//	Check if Student ID provided
+	if (empty($_GET['student_id']))
+	{
+		//	TODO Set error
+
+		//	Echo JSON message
+
+		//	Kill
+		die("No student ID specified");
+	}
+	$student_id = $_GET['student_id'];
+
+	//	Check for any new updates for the bulletin news
+	//	Get result
+	$portal->getHash($student_id, $tab);
+
+	//	Echo in JSON format
+	messageSender(1, $portal->hash);
