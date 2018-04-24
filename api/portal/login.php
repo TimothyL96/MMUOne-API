@@ -11,7 +11,7 @@
 	header("Access-Control-Allow-Methods: GET");
 	header("Access-Control-Allow-Credentials: true");
 	header("Content-Type: application/json; charset=UTF-8");
-	//	TODO TOKEN AND COOKIE AUTHORIZATION
+	//	TODO TOKEN AUTHORIZATION
 	//	TODO ADD COMMENTS
 	
 	//	Connection
@@ -91,11 +91,7 @@
 	}
 
 	//	Echo message
-	messageSender(1, array("message" => "Logged in", "cookie" => $cookie));
-
-
-	//	TODO serialize or store cookie
-	//	TODO run getUpdate to get the latest hash
+	messageSender(1, array("message" => "Logged in", "cookie" => file_get_contents($cookie)));
 
 	//	Login function with URL and cURL
 	function login($studentID, $passwordMMU, $cookie)
@@ -124,12 +120,6 @@
 			$this->error = 20601;
 
 			return false;
-		}
-
-		//	Close cURL resource and free up system resources
-		if (!is_null($curl))
-		{
-			curl_close($curl);
 		}
 
 		//	Return login succeeded

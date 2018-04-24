@@ -12,7 +12,7 @@
 	header("Access-Control-Allow-Methods: GET");
 	header("Access-Control-Allow-Credentials: true");
 	header("Content-Type: application/json; charset=UTF-8");
-	//	TODO TOKEN AND COOKIE AUTHORIZATION
+	//	TODO TOKEN AUTHORIZATION
 	//	TODO ADD COMMENTS
 
 	//	Connection
@@ -43,6 +43,9 @@
 	//	Set error
 	$error = 00000;
 
+	//	Set cookie
+	$cookie = tempnam("/cookie", "PORTAL_");
+
 	//	Check if Student ID provided
 	if (empty($_GET['student_id']))
 	{
@@ -65,7 +68,7 @@
 		//	Kill
 		die("No student ID specified");
 	}
-	$cookie = $_GET['cookie'];
+	file_put_contents($cookie, $_GET['cookie']);
 
 	//	URL of MMU Portal
 	$url = "https://online.mmu.edu.my/index.php";

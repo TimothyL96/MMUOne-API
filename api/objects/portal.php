@@ -14,6 +14,7 @@
 
 		//	Members for columns in the table "Portal"
 		public $hash;
+		public $data;
 
 		/**
 		 * Portal constructor. Get database connection and put in the private class member for connection
@@ -55,12 +56,44 @@
 			//	Get retrieved row
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+			//	Set data to class member
 			$this->hash = $row['hash'];
 			
-			//	Store result
+			//	Get data successful
 			return TRUE;
 		}
 
+		function getBulletin($student_id, $tab)
+		{
+			//	Select bulletin data of given tab of specific student
+			$query = "SELECT * FROM {$this->tableName} WHERE tab = :tab AND student_id = :student_id";
+
+			//	Prepare query statement
+			$stmt = $this->conn->prepare($query);
+
+			//	Bind parameters
+			$stmt->bindParam(':tab', $tab);
+			$stmt->bindParam(':student_id', $student_id);
+
+			//	Execute query
+			if (!$stmt->execute())
+			{
+				return FALSE;
+			}
+
+			//	TODO check row count and show error if 0 row
+
+			//	Get retrieved row
+			$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			//	Set data to class member
+			$this->data = $row['data'];
+
+			//	Get data successful
+			return true;
+		}
+
+		//	Update hash only
 		function updateHash($student_id, $tab, $hash)
 		{
 			//	Update query
@@ -88,6 +121,7 @@
 			return false;
 		}
 
+		//	Update table data and hash
 		function updateTable($student_id, $tab, $data, $hash)
 		{
 			//	Update data and hash

@@ -45,6 +45,12 @@
 			$status = 0;
 			$result = curl_error($curl);
 		}
+
+		//	Close cURL resource and free up system resources
+		if (!is_null($curl))
+		{
+			curl_close($curl);
+		}
 		
 		//	Return result
 		return array($status, $result);
