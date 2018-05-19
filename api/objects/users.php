@@ -349,7 +349,7 @@
 				echo "\"{$key}\": \"{$value}\"";
 
 				//	If not end of message, echo comma (,)
-				if (end($this->message) != $value)
+				if ((string)end($this->message) != (string)$value)
 				{
 					echo ",";
 				}	

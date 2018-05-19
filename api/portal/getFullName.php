@@ -30,6 +30,9 @@
 	//	Include cURL function: curl(url, postRequest, data, cookie)
 	require_once '../objects/curl.php';
 
+	//	Include Message Sender function
+	require_once '../objects/messageSender.php';
+
 	//	New Simple HTML DOM object
 	$htmlDOM = new simple_html_dom();
 
@@ -56,6 +59,7 @@
 		//	Kill
 		die("No student ID specified");
 	}
+
 	$student_id = $_GET['student_id'];
 
 	//	Check if cookie provided
@@ -66,9 +70,11 @@
 		//	Echo JSON message
 
 		//	Kill
-		die("No student ID specified");
+		die("No cookie specified");
 	}
-	file_put_contents($cookie, $_GET['cookie']);
+	file_put_contents($cookie, urldecode($_GET['cookie']));
+	//$cookie = urldecode($_GET['cookie']);
+	//$cookie = html_entity_decode($cookie);
 
 	//	URL of MMU Portal
 	$url = "https://online.mmu.edu.my/index.php";

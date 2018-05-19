@@ -28,6 +28,9 @@
 
 	//	Include cURL function: curl(url, postRequest, data, cookie)
 	require_once '../objects/curl.php';
+
+	//	Include Message Sender function
+	require_once '../objects/messageSender.php';
 	
 	//	Instantiate users object and retrieve connection
 	$db = new Database();
@@ -91,7 +94,13 @@
 	}
 
 	//	Echo message
-	messageSender(1, array("message" => "Logged in", "cookie" => file_get_contents($cookie)));
+	//$cookie = addslashes(file_get_contents($cookie));
+	$cookie = file_get_contents($cookie);
+	//$cookie = str_replace("\n", "", $cookie);
+	//$cookie = str_replace("\r", "", $cookie);
+	$cookie = urlencode($cookie);
+
+	messageSender(1, array("message" => "Logged in", "cookie" => $cookie));
 
 	//	Login function with URL and cURL
 	function login($studentID, $passwordMMU, $cookie)
@@ -121,7 +130,8 @@
 
 			return false;
 		}
-
+		//	TODO check if log in succeeded
+		//return $curlResult[1];
 		//	Return login succeeded
 		return true;
 	}

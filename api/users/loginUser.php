@@ -29,7 +29,7 @@
 	{
 		//	Succeeded
 		//	Set values for message array
-		$users->message['status'] = "succeed";
+		$users->message['status'] = "1";
 		$users->message['message'] = "User successfully logged in";
 		
 		//	Echo JSON message
@@ -46,7 +46,7 @@
 		}
 	
 		//	Set values for message array
-		$users->message['status'] = "failed";
+		$users->message['status'] = "0";
 		$users->message['code'] = $errorCode;
 		$users->message['message'] = $errorText;
 		
