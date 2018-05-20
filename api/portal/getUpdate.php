@@ -154,7 +154,7 @@
 
 				//	If current new news is already in the database, return
 				//	If this is not forced update, return
-				if ($oldHash == $currentHash && !$forceUpdate)
+				if ($oldHash == $currentHash && !$forcedUpdate)
 				{
 					break;
 				}
