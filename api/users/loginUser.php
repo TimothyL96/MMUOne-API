@@ -30,6 +30,7 @@
 		//	Succeeded
 		//	Set values for message array
 		$users->message['status'] = "1";
+		$users->message['code'] = $errorCode;
 		$users->message['message'] = "User successfully logged in";
 		
 		//	Echo JSON message

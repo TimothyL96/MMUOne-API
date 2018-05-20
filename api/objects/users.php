@@ -342,6 +342,10 @@
 			//	Echo the opening { for JSON output
 			echo "{";
 
+			//	Get last element key
+			end($this->message);
+			$lastElementKey = key($this->message);
+
 			//	Coverting array's keys and values to JSON with comma
 			foreach ($this->message as $key => $value)
 			{
@@ -349,7 +353,7 @@
 				echo "\"{$key}\": \"{$value}\"";
 
 				//	If not end of message, echo comma (,)
-				if ((string)end($this->message) != (string)$value)
+				if ($key != $lastElementKey)
 				{
 					echo ",";
 				}	

@@ -23,6 +23,10 @@
 		//	Echo the opening { for JSON output
 		echo "{";
 
+		//	Get last element key
+		end($message);
+		$lastElementKey = key($message);
+
 		//	Coverting array's keys and values to JSON with comma
 		foreach ($message as $key => $value)
 		{
@@ -39,7 +43,7 @@
 			}
 
 			//	If not end of message, echo comma (,)
-			if ((string)end($message) != (string)$value)
+			if ($key != $lastElementKey)
 			{
 				echo ",";
 			}
@@ -52,7 +56,12 @@
 	//	Recursion printing nested array
 	function nestedArray($value)
 	{
+		//	Get last element key
+		end($value);
+		$lastElementKey = key($value);
+
 		echo "{";
+
 		foreach ($value as $key1 => $value1)
 		{
 			//	Echo the key and value
@@ -68,7 +77,7 @@
 			}
 
 			//	If not end of message, echo comma (,)
-			if ((string)end($value) != (string)$value1)
+			if ($key1 != $lastElementKey)
 			{
 				echo ",";
 			}
