@@ -126,7 +126,7 @@
 
 			// TODO echo error
 		}
-		else if ($curlResult[0])
+		else
 		{
 			//	If bulletin data retrieved successfully
 			//	Load the string to HTML DOM without stripping /r/n tags
