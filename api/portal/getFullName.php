@@ -113,7 +113,7 @@
 	$fullName = trim(substr(trim($inputFullName[0]->plaintext), 8, strripos($inputFullName[0]->plaintext, "(") - 8));
 
 	//	Echo the full name
-	messageSender(1, $inputFullName);
+	messageSender(1, $fullName);
 
 	//	Clear the DOM memory
 	$htmlDOM->clear();

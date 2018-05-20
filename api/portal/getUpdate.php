@@ -86,7 +86,7 @@
 
 	$forcedUpdate = false;
 	$forcedUpdate = (bool)$_GET['force_update'];
-	
+
 	//	Check if token provided
 	//	Token equals to page number
 	if (!empty($_GET['token']))
