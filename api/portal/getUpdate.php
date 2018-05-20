@@ -84,6 +84,9 @@
 	}
 	file_put_contents($cookie, urldecode($_GET['cookie']));
 
+	$forcedUpdate = false;
+	$forcedUpdate = (bool)$_GET['force_update'];
+	
 	//	Check if token provided
 	//	Token equals to page number
 	if (!empty($_GET['token']))
@@ -150,7 +153,8 @@
 				$currentHash = hash('sha256', $bulletinSingle->plaintext);
 
 				//	If current new news is already in the database, return
-				if ($oldHash == $currentHash)
+				//	If this is not forced update, return
+				if ($oldHash == $currentHash && !$forceUpdate)
 				{
 					break;
 				}
