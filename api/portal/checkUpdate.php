@@ -22,6 +22,9 @@
 	//	Portal object
 	require_once '../objects/portal.php';
 
+	//	Include Message Sender function
+	require_once '../objects/messageSender.php';
+
 	//	Instantiate users object and retrieve connection
 	$db = new Database();
 	$conn = $db->connect();

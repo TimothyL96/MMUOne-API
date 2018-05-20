@@ -25,6 +25,9 @@
 	//	Get Simple HTML DOM library
 	require_once '../library/html_dom.php';
 
+	//	Include Message Sender function
+	require_once '../objects/messageSender.php';
+
 	//	New Simple HTML DOM object
 	$htmlDOM = new simple_html_dom();
 
@@ -76,7 +79,7 @@
 		//	Kill
 		die("No student ID specified");
 	}
-	file_put_contents($cookie, $_GET['cookie']);
+	file_put_contents($cookie, urldecode($_GET['cookie']));
 
 	//	Check if token provided
 	//	Token equals to page number
@@ -115,6 +118,8 @@
 			//	TODO ADD ERROR MESSAGE
 			//	Get bulletin failed
 			$error = 20602;
+
+			//TODO check return result
 
 			// TODO echo error
 		}

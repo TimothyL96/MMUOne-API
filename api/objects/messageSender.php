@@ -31,18 +31,7 @@
 
 			if (is_array($value))
 			{
-				echo "{";
-				foreach ($value as $key1 => $value1)
-				{
-					//	Echo the key and value
-					echo "\"{$key1}\": \"{$value1}\"";
-
-					if ((string)end($value) != (string)$value1)
-					{
-						echo ",";
-					}
-				}
-				echo "}";
+				nestedArray($value);
 			}
 			else
 			{
@@ -57,5 +46,32 @@
 		}
 
 		//	Echo the closing } for JSON output
+		echo "}";
+	}
+
+	//	Recursion printing nested array
+	function nestedArray($value)
+	{
+		echo "{";
+		foreach ($value as $key1 => $value1)
+		{
+			//	Echo the key and value
+			echo "\"{$key1}\": ";
+
+			if (is_array($value1))
+			{
+				nestedArray($value1);
+			}
+			else
+			{
+				echo "\"{$value1}\"";
+			}
+
+			//	If not end of message, echo comma (,)
+			if ((string)end($value) != (string)$value1)
+			{
+				echo ",";
+			}
+		}
 		echo "}";
 	}
