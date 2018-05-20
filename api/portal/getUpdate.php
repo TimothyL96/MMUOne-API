@@ -91,6 +91,13 @@
 		$token = $_GET['token'];
 	}
 
+	//	Set bulletin paged array
+	//	bulletin contains max 9 news, page 0 for no pages 1 for more pages
+	$bulletinPaged["bulletin"] = array();
+	$bulletinPaged["hasPage"] = 0;
+	$bulletinPaged["size"] = 0;
+	$bulletinPaged["token"] = 0;
+
 	if (empty($token))
 	{
 		//	If time getting data, no token exist
@@ -107,12 +114,6 @@
 
 		//	Execute cURL requets
 		$curlResult = curl($curl, $url, $postRequest, $data = array(), $cookie);
-
-		//	Set bulletin paged array
-		//	bulletin contains max 9 news, page 0 for no pages 1 for more pages
-		$bulletinPaged["bulletin"] = array();
-		$bulletinPaged["hasPage"] = 0;
-		$bulletinPaged["size"] = 0;
 
 		if (!$curlResult[0])
 		{
@@ -161,6 +162,9 @@
 					//	Increment the bulletin size by 1
 					$bulletinPaged["size"] = $bulletinPaged["size"] + 1;
 
+					//	Token is the total size sent
+					$bulletinPaged["token"] = $bulletinPaged["token"] + 1;
+
 					//	If max key reached
 					if ($key == 9)
 					{
@@ -173,31 +177,42 @@
 				}
 			}
 
+			$bulletinRemain = array();
+
+			foreach ($bulletin as $key => $bulletinSingle)
+			{
+				$bulletinRemain[$key] = $bulletinSingle->plaintext;
+			}
+
 			//	Clear the htmlDOM memory
 			$htmlDOM->clear();
 
 			//	Update table with data and latest hash
-			$portal->updateTable($student_id, $tab, json_encode($bulletin), $latestHash);
+			$portal->updateTable($student_id, $tab, json_encode($bulletinRemain), $latestHash);
 		}
-
-		//	Echo result as JSON
-		//	-	bulletin data
-		//	-	hasPage
-		//	-	size
-		messageSender(1, $bulletinPaged);
 	}
 	else
 	{
 		//	If token exist, get next page of data and echo as JSON
-		//	$token is page number
+		//	$token is total bulletin size sent
+		//	Set the bulletin token
+		$bulletinPaged["token"] = $token;
+
 		//	Get bulletin data
 		$bulletin = $portal->getBulletin($student_id, $tab);
 
+		//	TODO check if data retrivval succeeded
+		if (!$bulletin)
+		{
+
+		}
+		$bulletin = json_decode(html_entity_decode($portal->data));
+
 		//	Load the string to HTML DOM without stripping /r/n tags
-		$htmlDOM->load($bulletin, TRUE, FALSE);
+		//$htmlDOM->load($bulletinRetrieved, TRUE, FALSE);
 
 		//	Find the desired input field
-		$bulletin = $htmlDOM->find("div[id=tabs-{$tab}] div.bulletinContentAll");
+		//$bulletin = $htmlDOM->find("div[id=tabs-{$tab}] div.bulletinContentAll");
 
 		//	Counter to skip the bulletin data that are already sent
 		$pageCount = 0;
@@ -205,22 +220,25 @@
 		//	Set the next 10 bulletin data
 		foreach ($bulletin as $key => $bulletinSingle)
 		{
-			if ($pageCount != $token)
+			if ($pageCount < $token)
 			{
-				break;
+				//	Increment the counter
+				$pageCount++;
+				continue;
 			}
 
-			//	Increment the counter
-			$pageCount++;
-
 			//	Push the plaintext into bulletinPaged's bulletin
-			array_push($bulletinPaged["bulletin"], $bulletinSingle->plaintext);
+			array_push($bulletinPaged["bulletin"], $bulletinSingle);
 
 			//	Increment the bulletin size by 1
 			$bulletinPaged["size"] = $bulletinPaged["size"] + 1;
 
+			//	Token is the total size sent
+			$bulletinPaged["token"] = $bulletinPaged["token"] + 1;
+
 			//	If max key reached
-			if ($key == 9)
+			//	TODO what if key is last key, check with array end key value
+			if ($key - $token == 9)
 			{
 				//	Set more pages to true or 1
 				$bulletinPaged["hasPage"] = 1;
@@ -230,3 +248,9 @@
 			}
 		}
 	}
+
+	//	Echo result as JSON
+	//	-	bulletin data
+	//	-	hasPage
+	//	-	size
+	messageSender(1, $bulletinPaged);

@@ -149,5 +149,7 @@
 			}
 
 			return false;
+
+			//	TODO check error : $stmt->errorInfo();
 		}
 	}
