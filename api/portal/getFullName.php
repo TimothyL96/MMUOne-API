@@ -114,3 +114,6 @@
 
 	//	Echo the full name
 	messageSender(1, $fullName);
+
+	//	Clear the DOM memory
+	$htmlDOM->clear();

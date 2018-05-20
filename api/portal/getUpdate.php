@@ -28,6 +28,9 @@
 	//	Include Message Sender function
 	require_once '../objects/messageSender.php';
 
+	//	Include cURL function: curl(url, postRequest, data, cookie)
+	require_once '../objects/curl.php';
+
 	//	New Simple HTML DOM object
 	$htmlDOM = new simple_html_dom();
 
@@ -103,7 +106,7 @@
 		$postRequest = FALSE;
 
 		//	Execute cURL requets
-		$curlResult = curl($curl, $url, $postRequest, $cookie);
+		$curlResult = curl($curl, $url, $postRequest, $data = array(), $cookie);
 
 		//	Set bulletin paged array
 		//	bulletin contains max 9 news, page 0 for no pages 1 for more pages
@@ -169,6 +172,9 @@
 					}
 				}
 			}
+
+			//	Clear the htmlDOM memory
+			$htmlDOM->clear();
 
 			//	Update table with data and latest hash
 			$portal->updateTable($student_id, $tab, json_encode($bulletin), $latestHash);
