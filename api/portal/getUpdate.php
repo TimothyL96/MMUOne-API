@@ -44,9 +44,6 @@
 	//	Set error
 	$error = 000000;
 
-	//	Set cookie
-	$cookie = tempnam("/cookie", "PORTAL_");
-
 	//	Get $_GET data
 	//	Check if tab provided
 	if (empty($_GET['tab']))
@@ -72,6 +69,9 @@
 	}
 	$student_id = $_GET['student_id'];
 
+	//	Set cookie
+	$cookie = "cookie/portal_{$student_id}.cke";
+
 	//	Check if cookie path provided
 	if (empty($_GET['cookie']))
 	{
@@ -82,10 +82,13 @@
 		//	Kill
 		die("No student ID specified");
 	}
-	file_put_contents($cookie, urldecode($_GET['cookie']));
+	//file_put_contents($cookie, urldecode($_GET['cookie']));
 
 	$forcedUpdate = false;
-	$forcedUpdate = (bool)$_GET['force_update'];
+	if (!empty($_GET['force_update']))
+	{
+		$forcedUpdate = (bool)$_GET['force_update'];
+	}
 
 	//	Check if token provided
 	//	Token equals to page number
@@ -205,7 +208,7 @@
 		//	Get bulletin data
 		$bulletin = $portal->getBulletin($student_id, $tab);
 
-		//	TODO check if data retrivval succeeded
+		//	TODO check if data retrieval succeeded
 		if (!$bulletin)
 		{
 
@@ -220,6 +223,10 @@
 
 		//	Counter to skip the bulletin data that are already sent
 		$pageCount = 0;
+
+		//	Get the end key
+		end($bulletin);
+		$lastKey = key($bulletin);
 
 		//	Set the next 10 bulletin data
 		foreach ($bulletin as $key => $bulletinSingle)
@@ -241,8 +248,7 @@
 			$bulletinPaged["token"] = $bulletinPaged["token"] + 1;
 
 			//	If max key reached
-			//	TODO what if key is last key, check with array end key value
-			if ($key - $token == 9)
+			if ($key - $token == 9 && $key != $lastKey)
 			{
 				//	Set more pages to true or 1
 				$bulletinPaged["hasPage"] = 1;

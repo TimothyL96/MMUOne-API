@@ -42,9 +42,6 @@
 	//	Set up Portal object
 	$portal = new Portal($conn);
 
-	//	Set cookie
-	$cookie = tempnam("/cookie", "PORTAL_");
-
 	//	Set error
 	$error = 00000;
 	
@@ -61,7 +58,16 @@
 	
 	//	Set the student ID
 	$users->student_id = $_GET['student_id'];
-	
+
+	//	Set cookie
+	$cookie = "cookie/portal_{$users->student_id}.cke";
+
+	//	Check if file exist
+	if (!file_exists($cookie))
+	{
+		file_put_contents($cookie, "New file");
+	}
+
 	//	Retrieve user MMU IDM password to login to MMU Portal
 	$users->readPasswordMMU();
 	
@@ -94,11 +100,8 @@
 	}
 
 	//	Echo message
-	//$cookie = addslashes(file_get_contents($cookie));
-	$cookie = file_get_contents($cookie);
-	//$cookie = str_replace("\n", "", $cookie);
-	//$cookie = str_replace("\r", "", $cookie);
-	$cookie = urlencode($cookie);
+	//$cookie = file_get_contents($cookie);
+	//$cookie = urlencode($cookie);
 
 	messageSender(1, array("message" => "Logged in", "cookie" => $cookie));
 

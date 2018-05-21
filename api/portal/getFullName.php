@@ -46,9 +46,6 @@
 	//	Set error
 	$error = 00000;
 
-	//	Set cookie
-	$cookie = tempnam("/cookie", "PORTAL_");
-
 	//	Check if Student ID provided
 	if (empty($_GET['student_id']))
 	{
@@ -62,6 +59,9 @@
 
 	$student_id = $_GET['student_id'];
 
+	//	Set cookie
+	$cookie = "cookie/portal_{$student_id}.cke";
+
 	//	Check if cookie provided
 	if (empty($_GET['cookie']))
 	{
@@ -72,9 +72,8 @@
 		//	Kill
 		die("No cookie specified");
 	}
-	file_put_contents($cookie, urldecode($_GET['cookie']));
-	//$cookie = urldecode($_GET['cookie']);
-	//$cookie = html_entity_decode($cookie);
+
+	//file_put_contents($cookie, urldecode($_GET['cookie']));
 
 	//	URL of MMU Portal
 	$url = "https://online.mmu.edu.my/index.php";
@@ -85,7 +84,7 @@
 	//cURL
 	$curl = NULL;
 
-	$curlResult = curl($curl, $url, $postRequest, $data, $cookie);
+	$curlResult = curl($curl, $url, $postRequest, $data = array(), $cookie);
 
 	if (!$curlResult[0])
 	{
