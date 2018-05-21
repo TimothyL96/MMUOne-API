@@ -72,18 +72,7 @@
 	//	Set cookie
 	$cookie = "cookie/portal_{$student_id}.cke";
 
-	//	Check if cookie path provided
-	if (empty($_GET['cookie']))
-	{
-		//	TODO Set error and login
-
-		//	Echo JSON message
-
-		//	Kill
-		die("No student ID specified");
-	}
-	//file_put_contents($cookie, urldecode($_GET['cookie']));
-
+	//	force_update is optional, default is 0 or no force update
 	$forcedUpdate = false;
 	if (!empty($_GET['force_update']))
 	{

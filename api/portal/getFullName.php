@@ -62,19 +62,6 @@
 	//	Set cookie
 	$cookie = "cookie/portal_{$student_id}.cke";
 
-	//	Check if cookie provided
-	if (empty($_GET['cookie']))
-	{
-		//	TODO Set error
-
-		//	Echo JSON message
-
-		//	Kill
-		die("No cookie specified");
-	}
-
-	//file_put_contents($cookie, urldecode($_GET['cookie']));
-
 	//	URL of MMU Portal
 	$url = "https://online.mmu.edu.my/index.php";
 
