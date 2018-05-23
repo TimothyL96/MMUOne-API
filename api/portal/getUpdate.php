@@ -73,6 +73,7 @@
 	$cookie = "cookie/portal_{$student_id}.cke";
 
 	//	force_update is optional, default is 0 or no force update
+	//	If a token number is given, force_update has no effect
 	$forcedUpdate = false;
 	if (!empty($_GET['force_update']))
 	{
@@ -85,6 +86,9 @@
 	{
 		$token = $_GET['token'];
 	}
+
+	//	Set status variable
+	$status = 1;
 
 	//	Set bulletin paged array
 	//	bulletin contains max 9 news, page 0 for no pages 1 for more pages
@@ -228,7 +232,7 @@
 			}
 
 			//	Push the plaintext into bulletinPaged's bulletin
-			array_push($bulletinPaged["bulletin"], $bulletinSingle);
+			array_push($bulletinPaged["bulletin"], htmlentities($bulletinSingle));
 
 			//	Increment the bulletin size by 1
 			$bulletinPaged["size"] = $bulletinPaged["size"] + 1;
@@ -252,4 +256,4 @@
 	//	-	bulletin data
 	//	-	hasPage
 	//	-	size
-	messageSender(1, $bulletinPaged);
+	messageSender($status, $bulletinPaged);
