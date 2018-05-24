@@ -135,9 +135,16 @@
 			//	Find the desired input field
 			$bulletin = $htmlDOM->find("div[id=tabs-{$tab}] div.bulletinContentAll");
 
-			//	Get old hash
-			$portal->getHash($student_id, $tab);
-			$oldHash = $portal->hash;
+			if (empty($_GET['hash']))
+			{
+				//	Get old hash
+				$portal->getHash($student_id, $tab);
+				$oldHash = $portal->hash;
+			}
+			else
+			{
+				$oldHash = $_GET['hash'];
+			}
 
 			//	Get latest hash
 			$latestHash = hash('sha256', $bulletin[0]->plaintext);
@@ -177,18 +184,18 @@
 				}
 			}
 
-			$bulletinRemain = array();
+			$bulletinAll = array();
 
 			foreach ($bulletin as $key => $bulletinSingle)
 			{
-				$bulletinRemain[$key] = $bulletinSingle->plaintext;
+				$bulletinAll[$key] = $bulletinSingle->plaintext;
 			}
 
 			//	Clear the htmlDOM memory
 			$htmlDOM->clear();
 
 			//	Update table with data and latest hash
-			$portal->updateTable($student_id, $tab, json_encode($bulletinRemain), $latestHash);
+			$portal->updateTable($student_id, $tab, json_encode($bulletinAll), $latestHash);
 		}
 	}
 	else
