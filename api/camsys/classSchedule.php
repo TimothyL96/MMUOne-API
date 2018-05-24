@@ -2,10 +2,10 @@
 	/**
 	 * Created by PhpStorm.
 	 * User: Timothy
-	 * Date: 24/5/2018
-	 * Time: 5:18 PM
+	 * Date: 25/5/2018
+	 * Time: 12:06 AM
 	 */
-	//	Get account balance
+	//	Get class schedule
 
 	//	Headers
 	header("Access-Control-Allow-Origin: *");
@@ -65,8 +65,8 @@
 	//	Set cookie
 	$cookie = "cookie/camsys_{$users->student_id}.cke";
 
-	//	URL for account balance checking
-	$url = "https://cms.mmu.edu.my/psc/csprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.N_SSF_ACNT_SUMMARY.GBL?PORTALPARAM_PTCNAV=N_SSF_ACNT_SUMMARY_GBL&EOPP.SCNode=HRMS&EOPP.SCPortal=EMPLOYEE&EOPP.SCName=CO_EMPLOYEE_SELF_SERVICE&EOPP.SCLabel=Self%20Service&EOPP.SCPTfname=CO_EMPLOYEE_SELF_SERVICE&FolderPath=PORTAL_ROOT_OBJECT.CO_EMPLOYEE_SELF_SERVICE.HCCC_FINANCES.N_SSF_ACNT_SUMMARY_GBL&IsFolder=false&PortalActualURL=https%3a%2f%2fcms.mmu.edu.my%2fpsc%2fcsprd%2fEMPLOYEE%2fHRMS%2fc%2fSA_LEARNER_SERVICES.N_SSF_ACNT_SUMMARY.GBL&PortalContentURL=https%3a%2f%2fcms.mmu.edu.my%2fpsc%2fcsprd%2fEMPLOYEE%2fHRMS%2fc%2fSA_LEARNER_SERVICES.N_SSF_ACNT_SUMMARY.GBL&PortalContentProvider=HRMS&PortalCRefLabel=Account%20Enquiry&PortalRegistryName=EMPLOYEE&PortalServletURI=https%3a%2f%2fcms.mmu.edu.my%2fpsp%2fcsprd%2f&PortalURI=https%3a%2f%2fcms.mmu.edu.my%2fpsc%2fcsprd%2f&PortalHostNode=HRMS&NoCrumbs=yes&PortalKeyStruct=yes";
+	//	URL for getting class schedule
+	$url = "https://cms.mmu.edu.my/psc/csprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSR_SSENRL_SCHD_W.GBL?ACAD_CAREER=UGRD&INSTITUTION=MMU01&STRM=1810";
 
 	//	It is a post request
 	$postRequest = FALSE;
@@ -74,7 +74,7 @@
 	//cURL
 	$curl = NULL;
 
-	//	Get account balance data for current trimester
+	//	Get class schedule for current trimester
 	$curlResult = curl($curl, $url, $postRequest, $data = array(), $cookie);
 
 	if (!$curlResult[0])
@@ -86,24 +86,8 @@
 		return false;
 	}
 
-	//	Load the string to HTML DOM without stripping /r/n tags
-	$htmlDOM->load($curlResult[1], true, false);
-
-	//	Find the desired input field
-	$balance = $htmlDOM->find('div[id=win0divDERIVED_SSF_MSG_SSF_MSG_LONG3]');
-
-	//	Check if is "You have no outstanding charges at this time."
-	if ($balance[0]->plaintext == "You have no outstanding charges at this time.")
-	{
-		$balance = 0;
-	}
-	else
-	{
-		$balance = $balance[0]->plaintext;
-	}
+	//	Test
+	print_r($curlResult[1]);
 
 	//	Clear the HTML DOM memory leak
 	$htmlDOM->clear();
-
-	//	Echo the message
-	messageSender(1, $balance);

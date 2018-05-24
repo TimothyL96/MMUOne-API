@@ -5,6 +5,7 @@
 	 * Date: 24/5/2018
 	 * Time: 2:31 PM
 	 */
+	//	Get class attendance
 
 	//	Headers
 	header("Access-Control-Allow-Origin: *");
@@ -104,7 +105,7 @@
 	//	Retrieve HTML Input Checkbox for Lecturer's Barring List
 	//	Retrieve Current attendance % and Barring Process Attendance %
 	//	Retrieve Last Updated. Ex: 11/05/2018 11:30:17AM
-	//	TODO check if checked in lecture barring list
+	//	TODO check if checked in lecture barring list <input checked/>
 	for ($i = 3; $i < $subjectCount; $i++)
 	{
 		$attendanceSubjectPlaintext = $attendanceTable[$i]->plaintext;
