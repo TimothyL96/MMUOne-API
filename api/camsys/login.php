@@ -1,7 +1,7 @@
 <?php
 	//	***********************************
 	//
-	//				MMU PORTAL
+	//				Camsys
 	//
 	//	***********************************
 	
@@ -84,7 +84,6 @@
 	$studentID = $_GET['student_id'];
 	$password = $users->password_mmu;
 
-	////////////	OLD
 	//	URL of MMU Portal
 	$url = "https://cms.mmu.edu.my/psp/csprd/?cmd=login&languageCd=ENG";
 	
@@ -93,6 +92,7 @@
 
 	//	It is a post request
 	$postRequest = true;
+
 	//cURL
 	$curl = NULL;
 
