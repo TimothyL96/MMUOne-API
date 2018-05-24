@@ -103,3 +103,5 @@
 
 	//	Clear the DOM memory
 	$htmlDOM->clear();
+
+	//	TODO input full name
