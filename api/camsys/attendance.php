@@ -47,9 +47,6 @@
 	//	Set error
 	$error = 00000;
 
-	//	Store the attendance data
-	$attendance = array();
-
 	//	Check if Student ID provided
 	if (empty($_GET['student_id']))
 	{
@@ -66,6 +63,9 @@
 
 	//	Set cookie
 	$cookie = "cookie/camsys_{$users->student_id}.cke";
+
+	//	Store the attendance data
+	$attendance = array();
 
 	//	URL for attendance checking
 	$url = "https://cms.mmu.edu.my/psc/csprd/EMPLOYEE/HRMS/c/N_SR_STUDENT_RECORDS.N_SR_SS_ATTEND_PCT.GBL?PortalActualURL=https%3a%2f%2fcms.mmu.edu.my%2fpsc%2fcsprd%2fEMPLOYEE%2fHRMS%2fc%2fN_SR_STUDENT_RECORDS.N_SR_SS_ATTEND_PCT.GBL&PortalContentURL=https%3a%2f%2fcms.mmu.edu.my%2fpsc%2fcsprd%2fEMPLOYEE%2fHRMS%2fc%2fN_SR_STUDENT_RECORDS.N_SR_SS_ATTEND_PCT.GBL&PortalContentProvider=HRMS&PortalCRefLabel=Attendance%20Percentage%20by%20class&PortalRegistryName=EMPLOYEE&PortalServletURI=https%3a%2f%2fcms.mmu.edu.my%2fpsp%2fcsprd%2f&PortalURI=https%3a%2f%2fcms.mmu.edu.my%2fpsc%2fcsprd%2f&PortalHostNode=HRMS&NoCrumbs=yes&PortalKeyStruct=yes";
@@ -104,7 +104,7 @@
 	//	Retrieve HTML Input Checkbox for Lecturer's Barring List
 	//	Retrieve Current attendance % and Barring Process Attendance %
 	//	Retrieve Last Updated. Ex: 11/05/2018 11:30:17AM
-
+	//	TODO check if checked in lecture barring list
 	for ($i = 3; $i < $subjectCount; $i++)
 	{
 		$attendanceSubjectPlaintext = $attendanceTable[$i]->plaintext;
