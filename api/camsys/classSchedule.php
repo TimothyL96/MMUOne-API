@@ -66,7 +66,7 @@
 	$cookie = "cookie/camsys_{$users->student_id}.cke";
 
 	//	URL for getting class schedule
-	$url = "https://cms.mmu.edu.my/psc/csprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSR_SSENRL_SCHD_W.GBL?ACAD_CAREER=UGRD&INSTITUTION=MMU01&STRM=1810";
+	$url = "https://cms.mmu.edu.my/psc/csprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSR_SSENRL_SCHD_W.GBL?Page=SSR_SS_WEEK";
 
 	//	It is a post request
 	$postRequest = FALSE;
