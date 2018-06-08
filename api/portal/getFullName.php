@@ -7,13 +7,11 @@
 	 */
 
 	//	Headers
-	header("Access-Control-Allow-Origin: *");
-	header("Access-Control-Allow-Headers: access");
-	header("Access-Control-Allow-Methods: GET");
-	header("Access-Control-Allow-Credentials: true");
-	header("Content-Type: application/json; charset=UTF-8");
+	require_once '../objects/header_get.php';
+
 	//	TODO TOKEN AUTHORIZATION
 	//	TODO ADD COMMENTS
+	//	TODO helper function
 
 	//	Connection
 	require_once '../config/connection.php';
@@ -45,6 +43,15 @@
 
 	//	Set error
 	$error = 00000;
+
+	//	Get all HTTP headers
+	$headers = apache_request_headers();
+
+	//	Check if authorization header set
+	if (isset($headers['Authorization']))
+	{
+		echo $headers['Authorization'];
+	}
 
 	//	Check if Student ID provided
 	if (empty($_GET['student_id']))

@@ -6,12 +6,8 @@
 	 * Time: 12:06 AM
 	 */
 
-	//	Header
-	header("Access-Control-Allow-Origin: *");
-	header("Access-Control-Allow-Headers: access");
-	header("Access-Control-Allow-Methods: GET");
-	header("Access-Control-Allow-Credentials: true");
-	header('Content-Type: application/json');
+	//	Headers
+	require_once '../objects/header_get.php';
 
 	//	Connection
 	require_once '../config/connection.php';

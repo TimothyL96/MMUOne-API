@@ -1,10 +1,6 @@
 <?php
 	//	Headers
-	header("Access-Control-Allow-Origin: *");
-	header("Access-Control-Allow-Headers: access");
-	header("Access-Control-Allow-Methods: GET");
-	header("Access-Control-Allow-Credentials: true");
-	header("Content-Type: application/json; charset=UTF-8");
+	require_once '../objects/header_get.php';
 	
 	//	Connection
 	require_once '../config/connection.php';
@@ -26,7 +22,7 @@
 	}
 	else
 	{
-		$users->message['status'] = "failed";
+		$users->message['status'] = "0";
 		$users->message['code'] = $users->error;
 		$users->message['message'] = $users->getErrorText(10600);
 		
@@ -55,5 +51,5 @@
 		);
 	
 	//	Echo in JSON format
-	$users->message['status'] = "succeed";
+	$users->message['status'] = "1";
 	$users->message['message'] = json_encode($users_array);
