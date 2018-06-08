@@ -55,7 +55,7 @@
 
 	//	Check for any new updates for the bulletin news
 	//	Get result
-	$portal->getHash($student_id, $tab);
+	$portal->getHash($tab);
 
 	//	Echo in JSON format
 	messageSender(1, $portal->hash);

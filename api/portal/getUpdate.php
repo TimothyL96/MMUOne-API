@@ -134,7 +134,7 @@
 			if (empty($_GET['hash']))
 			{
 				//	Get old hash
-				$portal->getHash($student_id, $tab);
+				$portal->getHash($tab);
 				$oldHash = $portal->hash;
 			}
 			else
@@ -191,7 +191,7 @@
 			$htmlDOM->clear();
 
 			//	Update table with data and latest hash
-			$portal->updateTable($student_id, $tab, json_encode($bulletinAll), $latestHash);
+			$portal->updateTable($tab, json_encode($bulletinAll), $latestHash);
 		}
 	}
 	else
@@ -202,7 +202,7 @@
 		$bulletinPaged["token"] = $token;
 
 		//	Get bulletin data
-		$bulletin = $portal->getBulletin($student_id, $tab);
+		$bulletin = $portal->getBulletin($tab);
 
 		//	TODO check if data retrieval succeeded
 		if (!$bulletin)
