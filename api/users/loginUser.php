@@ -28,9 +28,6 @@
 		$users->message['status'] = "1";
 		$users->message['code'] = $errorCode;
 		$users->message['message'] = "User successfully logged in";
-		
-		//	Echo JSON message
-		$users->echoMessage();
 	}
 	else
 	{
@@ -46,7 +43,7 @@
 		$users->message['status'] = "0";
 		$users->message['code'] = $errorCode;
 		$users->message['message'] = $errorText;
-		
-		//	Echo JSON message
-		$users->echoMessage();
 	}
+
+	//	Echo JSON message
+	$users->echoMessage();

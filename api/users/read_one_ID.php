@@ -53,3 +53,6 @@
 	//	Echo in JSON format
 	$users->message['status'] = "1";
 	$users->message['message'] = json_encode($users_array);
+
+	//	Echo JSON message
+	$users->echoMessage();
