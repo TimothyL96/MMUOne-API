@@ -15,6 +15,8 @@
 		//	Members for columns in the table "Portal"
 		public $hash;
 		public $data;
+		public $fullName;
+		public $student_id;
 
 		/**
 		 * Portal constructor. Get database connection and put in the private class member for connection
@@ -35,7 +37,7 @@
 
 		}
 
-		function getHash($student_id, $tab)
+		function getHash($tab)
 		{
 			//	Select hash of given tab of specific student
 			$query = "SELECT hash FROM {$this->tableName} WHERE tab = :tab AND student_id = :student_id";
@@ -45,12 +47,12 @@
 
 			//	Bind parameters
 			$stmt->bindParam(':tab', $tab);
-			$stmt->bindParam(':student_id', $student_id);
+			$stmt->bindParam(':student_id', $this->student_id);
 
 			//	Execute query
 			if (!$stmt->execute())
 			{
-				return false;
+				return FALSE;
 			}
 
 			//	Get retrieved row
@@ -63,7 +65,27 @@
 			return TRUE;
 		}
 
-		function getBulletin($student_id, $tab)
+		function getFullName()
+		{
+			$query = "SELECT full_name FROM {$this->tableName} WHERE student_id = ?";
+
+			$stmt = $this->conn->prepare($query);
+
+			$stmt->bindParam(1, $this->student_id);
+
+			if (!$stmt->execute())
+			{
+				return FALSE;
+			}
+
+			$row = $stmt->fetech(PDO::FETCH_ASSOC);
+
+			$this->fullName = $row['full_name'];
+
+			return TRUE;
+		}
+
+		function getBulletin($tab)
 		{
 			//	Select bulletin data of given tab of specific student
 			$query = "SELECT * FROM {$this->tableName} WHERE tab = :tab AND student_id = :student_id";
@@ -73,7 +95,7 @@
 
 			//	Bind parameters
 			$stmt->bindParam(':tab', $tab);
-			$stmt->bindParam(':student_id', $student_id);
+			$stmt->bindParam(':student_id', $this->student_id);
 
 			//	Execute query
 			if (!$stmt->execute())
@@ -90,11 +112,11 @@
 			$this->data = $row['data'];
 
 			//	Get data successful
-			return true;
+			return TRUE;
 		}
 
 		//	Update hash only
-		function updateHash($student_id, $tab, $hash)
+		function updateHash($tab, $hash)
 		{
 			//	Update query
 			$query = "UPDATE {$this->tableName} SET hash = :hash WHERE tab = :tab AND student_id = :student_id";
@@ -103,7 +125,7 @@
 			$stmt = $this->conn->prepare($query);
 
 			//	Sanitize
-			$student_id = htmlspecialchars(strip_tags($student_id));
+			$student_id = htmlspecialchars(strip_tags($this->student_id));
 			$tab = htmlspecialchars(strip_tags($tab));
 			$hash = htmlspecialchars(strip_tags($hash));
 
@@ -113,20 +135,16 @@
 			$stmt->bindParam(':hash', $hash);
 
 			//	Execute query
-			if ($stmt->execute())
+			if (!$stmt->execute())
 			{
-				return true;
+				return FALSE;
 			}
 
-			return false;
+			return TRUE;
 		}
 
-		//	TODO create row with tab: 1 new users & check if tab row exist
-
-		//	TODO insert full name & retrieve full name
-
 		//	Update table data and hash
-		function updateTable($student_id, $tab, $data, $hash)
+		function updateTable($tab, $data, $hash)
 		{
 			//	Update data and hash
 			$query = "UPDATE {$this->tableName} SET data = :data, hash = :hash WHERE tab = :tab AND student_id = :student_id";
@@ -135,7 +153,7 @@
 			$stmt = $this->conn->prepare($query);
 
 			//	Sanitize
-			$student_id = htmlspecialchars(strip_tags($student_id));
+			$student_id = htmlspecialchars(strip_tags($this->student_id));
 			$tab = htmlspecialchars(strip_tags($tab));
 			$data = htmlspecialchars(strip_tags($data));
 			$hash = htmlspecialchars(strip_tags($hash));
@@ -147,13 +165,68 @@
 			$stmt->bindParam(':hash', $hash);
 
 			//	Execute query
-			if ($stmt->execute())
+			if (!$stmt->execute())
 			{
-				return true;
+				return FALSE;
 			}
 
-			return false;
+			return TRUE;
 
 			//	TODO check error : $stmt->errorInfo();
+		}
+
+		function updateFullName($fullName)
+		{
+			$query = "UPDATE {$this->tableName} SET full_name = ? WHERE student_id = ?";
+
+			$stmt = $this->conn->prepare($query);
+
+			$stmt->bindParam(1, $fullName);
+			$stmt->bindParam(2, $this->student_id);
+
+			if (!$stmt->execute())
+			{
+				return FALSE;
+			}
+
+			return TRUE;
+		}
+
+		function insertNewUser()
+		{
+			$query = "SELECT * FROM {$this->tableName} WHERE student_id = ?";
+
+			$stmt = $this->conn->prepare($query);
+
+			$stmt->bindParams(1, $this->student_id);
+
+			if (!$stmt->execute())
+			{
+				return FALSE;
+			}
+
+			//	Store result to get number of rows
+			$stmt->store_result();
+
+			//	If row for user existed
+			if ($stmt->num_rows == 1)
+			{
+				return TRUE;
+			}
+
+			//	Row does not exist for user
+			//	Create new row
+			$query = "INSERT INTO {$this->tableName} (student_id) VALUES (?)";
+
+			$stmt = $this->conn->prepare($query);
+
+			$stmt->bindParams(1, $this->student_id);
+
+			if (!$stmt->execute())
+			{
+				return FALSE;
+			}
+
+			return TRUE;
 		}
 	}
