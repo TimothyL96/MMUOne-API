@@ -13,7 +13,26 @@
 	require_once '../config/connection.php';
 
 	//	Check whether input token is valid or not
-	function tokenValidation()
+	function tokenValidation($studentID, $tokenToValidate)
 	{
-		return BOOL;
+		$db = new Database();
+		$conn = $db->connect();
+
+		$token = new token($conn);
+		$token->student_id = $studentID;
+
+		$tokenFromDB = $token->getToken();
+		if (!$tokenFromDB)
+		{
+			return FALSE;
+		}
+
+		//	Same token
+		if ($tokenFromDB == $tokenToValidate)
+		{
+			//	In the future, can add token duration/time checking
+			return TRUE;
+		}
+
+		return FALSE;
 	}
