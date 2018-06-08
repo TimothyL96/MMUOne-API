@@ -6,98 +6,27 @@
 	 * Time: 5:53 PM
 	 */
 
-	//	Headers
-	require_once '../objects/header_get.php';
-
 	//	TODO TOKEN AUTHORIZATION
 	//	TODO ADD COMMENTS
 	//	TODO helper function
 
-	//	Connection
-	require_once '../config/connection.php';
+	//	"required" if htmlDOM is needed
+	$htmlDOM = "required";
+	require_once '../objects/portal_helper.php';
 
-	//	Users object
-	require_once '../objects/users.php';
+	//	Portal body
+	$portalData = portalInclude(array(), array("https://online.mmu.edu.my/index.php", FALSE, 12345));
 
-	//	Portal object
-	require_once '../objects/portal.php';
-
-	//	Get Simple HTML DOM library
-	require_once '../library/html_dom.php';
-
-	//	Include cURL function: curl(url, postRequest, data, cookie)
-	require_once '../objects/curl.php';
-
-	//	Include Message Sender function
-	require_once '../objects/messageSender.php';
-
-	//	New Simple HTML DOM object
-	$htmlDOM = new simple_html_dom();
-
-	//	Instantiate users object and retrieve connection
-	$db = new Database();
-	$conn = $db->connect();
-
-	//	Set up Portal object
-	$portal = new Portal($conn);
-
-	//	Set error
-	$error = 00000;
-
-	//	Get all HTTP headers
-	$headers = apache_request_headers();
-
-	//	Check if authorization header set
-	if (isset($headers['Authorization']))
+	//	Check return data
+	if (!$portalData)
 	{
-		echo $headers['Authorization'];
-	}
-
-	//	Check if Student ID provided
-	if (empty($_GET['student_id']))
-	{
-		//	TODO Set error
-
-		//	Echo JSON message
-
-		//	Kill
-		die("No student ID specified");
-	}
-
-	$student_id = $_GET['student_id'];
-
-	//	Set cookie
-	$cookie = "cookie/portal_{$student_id}.cke";
-
-	//	URL of MMU Portal
-	$url = "https://online.mmu.edu.my/index.php";
-
-	//	It is a GET request
-	$postRequest = FALSE;
-
-	//cURL
-	$curl = NULL;
-
-	$curlResult = curl($curl, $url, $postRequest, $data = array(), $cookie);
-
-	if (!$curlResult[0])
-	{
-		//	get name failed
-		//	TODO ADD ERROR MESSAGE
-		$this->error = 20601;
-
-		return false;
-	}
-
-	//	Close cURL resource and free up system resources
-	if (!is_null($curl))
-	{
-		curl_close($curl);
+		//	If false, means cURL failed
+		die();
 	}
 
 	//	Check for id "headerWrapper" that will contain "Welcome, (Full Name)"
 	//	Load the string to HTML DOM without stripping /r/n tags
-	$htmlDOM->load($curlResult[1], true, false);
+	$htmlDOM->load($portalData, true, false);
 
 	//	Find the desired input field
 	$inputFullName = $htmlDOM->find('#headerWrapper .floatL');
@@ -110,5 +39,3 @@
 
 	//	Clear the DOM memory
 	$htmlDOM->clear();
-
-	//	TODO input full name
