@@ -12,6 +12,9 @@
 	//	Include Message Sender function
 	require_once '../objects/messageSender.php';
 
+	//	Include token validation function
+	require_once '../objects/tokenManagement.php';
+
 	//	Check if exist to exclude HTML DOM
 	if ($htmlDOM == "required")
 	{
@@ -26,6 +29,7 @@
 	//	Accept parameter: An array that can have value of:
 	//	- cookie
 	//	- tab
+	//	- token
 	//
 	//	Second parameter: An array fill with necessary data for CuRL
 	//	- URL
@@ -46,9 +50,6 @@
 		//	Include cURL function: curl(url, postRequest, data, cookie)
 		require_once '../objects/curl.php';
 
-		//	Include token validation function
-		require_once '../objects/tokenValidation.php';
-
 		//	Instantiate users object and retrieve connection
 		$db = new Database();
 		$conn = $db->connect();
@@ -67,20 +68,20 @@
 			die();
 		}
 
-		//	Retrieve token
-		$token = $headers['Authorization'];
-
-		//	Peform token validation
-		if (!tokenValidation())
+		$student_id = NULL;
+		if (!in_array("token", $toExclude))
 		{
-			//	Invalid token - echo error and die
-			messageSender(0, "Invalid token received", 123457);
-			die();
-		}
+			//	Retrieve token
+			$token = $headers['Authorization'];
 
-		//	TODO
-		//	Retrieve student ID from related token
-		$student_id = 123;
+			//	Peform token validation - Retrieve student ID from related token
+			$student_id = tokenValidation($token);
+			if (!$student_id)
+			{
+				messageSender(0, "Invalid token received", 123457);
+				die();
+			}
+		}
 
 		//	Check if exist to exclude tab
 		$tab = NULL;

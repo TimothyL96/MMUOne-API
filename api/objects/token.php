@@ -110,6 +110,33 @@
 			return TRUE;
 		}
 
+		function getStudentID($token)
+		{
+			$query = "SELECT student_id FROM {$this->tableName} WHERE token = ?";
+
+			$stmt = $this->conn->prepare($query);
+
+			$stmt->bindParams(1, $token);
+
+			if (!$stmt->execute())
+			{
+				return FALSE;
+			}
+
+			$stmt->store_result();
+			$count = $stmt->num_rows;
+
+			if ($count == 1)
+			{
+				$row = $stmt->fetch(PDO::FETCH_ASSOC);
+				$this->student_id = $row['student_id'];
+
+				return TRUE;
+			}
+
+			return FALSE;
+		}
+
 		function updateMacAddr($macAddr)
 		{
 			$query = "UPDATE {$this->tableName} SET mac_addr = ? WHERE student_id = ?";
