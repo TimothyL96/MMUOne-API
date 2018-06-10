@@ -5,53 +5,15 @@
 	//
 	//	***********************************
 
-	//	Headers
-	require_once '../objects/header_get.php';
+	$htmlDOM = "required";
 
-	//	TODO TOKEN AUTHORIZATION
-	//	TODO ADD COMMENTS
-	
-	//	Connection
-	require_once '../config/connection.php';
-	
 	//	Users object
 	require_once '../objects/users.php';
-	
-	//	Portal object
-	require_once '../objects/portal.php';
-	
-	//	Get Simple HTML DOM library
-	require_once '../library/html_dom.php';
 
-	//	Include cURL function: curl(url, postRequest, data, cookie)
-	require_once '../objects/curl.php';
+	require_once '../objects/portal_helper.php';
 
-	//	Include Message Sender function
-	require_once '../objects/messageSender.php';
-	
-	//	Instantiate users object and retrieve connection
-	$db = new Database();
-	$conn = $db->connect();
-	
 	//	Set connection for users table
 	$users = new Users($conn);
-	
-	//	Set up Portal object
-	$portal = new Portal($conn);
-
-	//	Set error
-	$error = 00000;
-	
-	//	Check if Student ID provided
-	if (empty($_GET['student_id']))
-	{
-		//	TODO Set error
-		
-		//	Echo JSON message
-		
-		//	Kill
-		die("No student ID specified");	
-	}
 	
 	//	Set the student ID
 	$users->student_id = $_GET['student_id'];
@@ -71,16 +33,15 @@
 	if (empty($users->password_mmu))
 	{
 		//	Failed to get user's MMU (IDM) password.
-		//	TODO Set error
-		
 		//	Echo JSON message
-		
+		messageSender(0, "Failed to get user's MMU password", 99999);
+
 		//	Kill
-		die("Failed to get user's MMU password");
+		die();
 	}
 	
 	//	Set Login Credentials for MMU Portal
-	$studentID = $_GET['student_id'];
+	$studentID = $users->student_id;
 	$password = $users->password_mmu;
 		
 	//	Login to MMU Portal
@@ -88,12 +49,11 @@
 	if (!login($studentID, $password, $cookie))
 	{
 		//	Failed to login user to MMU Portal
-		//	TODO Set error (error code 20601)
-		
 		//	Echo JSON message
-		
+		messageSender(0, "Failed to login user to MMU Portal", 88888);
+
 		//	Kill
-		die("Failed to login user to MMU Portal");
+		die();
 	}
 
 	//	Echo message
@@ -114,21 +74,20 @@
 		//	It is a POST request
 		$postRequest = true;
 
-		//cURL
-		$curl = NULL;
+		$portalData = portalInclude(array("tab", "cookie"), array($url, $postRequest, 987665, $data));
 
-		$curlResult = curl($curl, $url, $postRequest, $data, $cookie);
-
-		if (!$curlResult[0])
+		//	Check return data
+		if (!$portalData)
 		{
-			//	log in failed
-			//	TODO ADD ERROR MESSAGE
-			$this->error = 20601;
-
-			return false;
+			//	If false, means cURL failed
+			messageSender(0, "Portal Data return error!", 11111);
+			die();
 		}
-		//	TODO check if log in succeeded
-		//return $curlResult[1];
-		//	Return login succeeded
-		return true;
+
+		if (strpos($portalData, "WELCOME TO MMU ONLINE PORTAL!") === FALSE)
+		{
+			return FALSE;
+		}
+
+		return TRUE;
 	}

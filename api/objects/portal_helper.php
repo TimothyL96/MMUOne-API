@@ -9,6 +9,9 @@
 	//	Headers
 	require_once '../objects/header_get.php';
 
+	//	Connection
+	require_once '../config/connection.php';
+
 	//	Include Message Sender function
 	require_once '../objects/messageSender.php';
 
@@ -39,12 +42,6 @@
 
 	function portalInclude($toExclude = array(), $curlData = array())
 	{
-		//	Connection
-		require_once '../config/connection.php';
-
-		//	Users object
-		require_once '../objects/users.php';
-
 		//	Portal object
 		require_once '../objects/portal.php';
 
