@@ -6,67 +6,9 @@
 	 * Time: 12:13 AM
 	 */
 
-	//	Headers
-	require_once '../objects/header_get.php';
+	$htmlDOM = "required";
 
-	//	Connection
-	require_once '../config/connection.php';
-
-	//	Users object
-	require_once '../objects/users.php';
-
-	//	Portal object
-	require_once '../objects/portal.php';
-
-	//	Get Simple HTML DOM library
-	require_once '../library/html_dom.php';
-
-	//	Include Message Sender function
-	require_once '../objects/messageSender.php';
-
-	//	Include cURL function: curl(url, postRequest, data, cookie)
-	require_once '../objects/curl.php';
-
-	//	New Simple HTML DOM object
-	$htmlDOM = new simple_html_dom();
-
-	//	Instantiate users object and retrieve connection
-	$db = new Database();
-	$conn = $db->connect();
-
-	//	Set up Portal object
-	$portal = new Portal($conn);
-
-	//	Set error
-	$error = 000000;
-
-	//	Get $_GET data
-	//	Check if tab provided
-	if (empty($_GET['tab']))
-	{
-		//	TODO Set error
-
-		//	Echo JSON message
-
-		//	Kill
-		die("No tab provided");
-	}
-	$tab = $_GET['tab'];
-
-	//	Check if Student ID provided
-	if (empty($_GET['student_id']))
-	{
-		//	TODO Set error
-
-		//	Echo JSON message
-
-		//	Kill
-		die("No student ID specified");
-	}
-	$student_id = $_GET['student_id'];
-
-	//	Set cookie
-	$cookie = "cookie/portal_{$student_id}.cke";
+	require_once '../objects/portal_helper.php';
 
 	//	force_update is optional, default is 0 or no force update
 	//	If a token number is given, force_update has no effect
@@ -76,15 +18,11 @@
 		$forcedUpdate = (bool)$_GET['force_update'];
 	}
 
-	//	Check if token provided
-	//	Token equals to page number
-	if (!empty($_GET['token']))
+	//	Check if page number provided
+	if (!empty($_GET['page']))
 	{
-		$token = $_GET['token'];
+		$page = $_GET['page'];
 	}
-
-	//	Set status variable
-	$status = 1;
 
 	//	Set bulletin paged array
 	//	bulletin contains max 9 news, page 0 for no pages 1 for more pages
@@ -93,7 +31,7 @@
 	$bulletinPaged["size"] = 0;
 	$bulletinPaged["token"] = 0;
 
-	if (empty($token))
+	if (empty($page))
 	{
 		//	If time getting data, no token exist
 		//	Get all the bulletin news
@@ -101,105 +39,93 @@
 		//	URL of MMU Portal's Bulletion Boarx
 		$url = "https://online.mmu.edu.my/bulletin.php";
 
-		//	cURL
-		$curl = NULL;
+		//	Get cURL result
+		$portalData = portalInclude(array(), array($url, FALSE, 54321));
 
-		//	It is not a POST request
-		$postRequest = FALSE;
-
-		//	Execute cURL requets
-		$curlResult = curl($curl, $url, $postRequest, $data = array(), $cookie);
-
-		if (!$curlResult[0])
+		//	Check return data
+		if (!$portalData)
 		{
-			$errorMessage = $curlResult[1];
+			//	If false, means cURL failed
+			messageSender(0, "Portal Data return error!", 11111);
+			die();
+		}
 
-			//	TODO ADD ERROR MESSAGE
-			//	Get bulletin failed
-			$error = 20602;
+		//	If bulletin data retrieved successfully
+		//	Load the string to HTML DOM without stripping /r/n tags
+		$htmlDOM->load($portalData, TRUE, FALSE);
 
-			//TODO check return result
+		//	Find the desired input field
+		$bulletin = $htmlDOM->find("div[id=tabs-{$tab}] div.bulletinContentAll");
 
-			// TODO echo error
+		if (empty($_GET['hash']))
+		{
+			//	Get old hash
+			$portal->getHash($tab);
+			$oldHash = $portal->hash;
 		}
 		else
 		{
-			//	If bulletin data retrieved successfully
-			//	Load the string to HTML DOM without stripping /r/n tags
-			$htmlDOM->load($curlResult[1], TRUE, FALSE);
+			$oldHash = $_GET['hash'];
+		}
 
-			//	Find the desired input field
-			$bulletin = $htmlDOM->find("div[id=tabs-{$tab}] div.bulletinContentAll");
+		//	Get latest hash
+		$latestHash = hash('sha256', $bulletin[0]->plaintext);
 
-			if (empty($_GET['hash']))
+		//	Set the latest bulletin news
+		foreach ($bulletin as $key => $bulletinSingle)
+		{
+			//	Get new hash
+			$currentHash = hash('sha256', $bulletinSingle->plaintext);
+
+			//	If current new news is already in the database, return
+			//	If this is not forced update, return
+			if ($oldHash == $currentHash && !$forcedUpdate)
 			{
-				//	Get old hash
-				$portal->getHash($tab);
-				$oldHash = $portal->hash;
+				break;
 			}
 			else
 			{
-				$oldHash = $_GET['hash'];
-			}
+				//	Push the plaintext into bulletinPaged's bulletin
+				array_push($bulletinPaged["bulletin"], $bulletinSingle->plaintext);
 
-			//	Get latest hash
-			$latestHash = hash('sha256', $bulletin[0]->plaintext);
+				//	Increment the bulletin size by 1
+				$bulletinPaged["size"] = $bulletinPaged["size"] + 1;
 
-			//	Set the latest bulletin news
-			foreach ($bulletin as $key => $bulletinSingle)
-			{
-				//	Get new hash
-				$currentHash = hash('sha256', $bulletinSingle->plaintext);
+				//	Token is the total size sent
+				$bulletinPaged["token"] = $bulletinPaged["token"] + 1;
 
-				//	If current new news is already in the database, return
-				//	If this is not forced update, return
-				if ($oldHash == $currentHash && !$forcedUpdate)
+				//	If max key reached
+				if ($key == 9)
 				{
+					//	Set more pages to true or 1
+					$bulletinPaged["hasPage"] = 1;
+
+					//	Break the foreach loop
 					break;
 				}
-				else
-				{
-					//	Push the plaintext into bulletinPaged's bulletin
-					array_push($bulletinPaged["bulletin"], $bulletinSingle->plaintext);
-
-					//	Increment the bulletin size by 1
-					$bulletinPaged["size"] = $bulletinPaged["size"] + 1;
-
-					//	Token is the total size sent
-					$bulletinPaged["token"] = $bulletinPaged["token"] + 1;
-
-					//	If max key reached
-					if ($key == 9)
-					{
-						//	Set more pages to true or 1
-						$bulletinPaged["hasPage"] = 1;
-
-						//	Break the foreach loop
-						break;
-					}
-				}
 			}
-
-			$bulletinAll = array();
-
-			foreach ($bulletin as $key => $bulletinSingle)
-			{
-				$bulletinAll[$key] = $bulletinSingle->plaintext;
-			}
-
-			//	Clear the htmlDOM memory
-			$htmlDOM->clear();
-
-			//	Update table with data and latest hash
-			$portal->updateTable($tab, json_encode($bulletinAll), $latestHash);
 		}
+
+		$bulletinAll = array();
+
+		foreach ($bulletin as $key => $bulletinSingle)
+		{
+			$bulletinAll[$key] = $bulletinSingle->plaintext;
+		}
+
+		//	Clear the htmlDOM memory
+		$htmlDOM->clear();
+
+		//	Update table with data and latest hash
+		$portal->updateTable($tab, json_encode($bulletinAll), $latestHash);
+
 	}
 	else
 	{
 		//	If token exist, get next page of data and echo as JSON
 		//	$token is total bulletin size sent
 		//	Set the bulletin token
-		$bulletinPaged["token"] = $token;
+		$bulletinPaged["token"] = $page;
 
 		//	Get bulletin data
 		$bulletin = $portal->getBulletin($tab);
@@ -207,7 +133,8 @@
 		//	TODO check if data retrieval succeeded
 		if (!$bulletin)
 		{
-
+			messageSender(0, "\$bulletin data retrieval error", 1234789);
+			die();
 		}
 		$bulletin = json_decode(html_entity_decode($portal->data));
 
@@ -227,7 +154,7 @@
 		//	Set the next 10 bulletin data
 		foreach ($bulletin as $key => $bulletinSingle)
 		{
-			if ($pageCount < $token)
+			if ($pageCount < $page)
 			{
 				//	Increment the counter
 				$pageCount++;
@@ -244,7 +171,7 @@
 			$bulletinPaged["token"] = $bulletinPaged["token"] + 1;
 
 			//	If max key reached
-			if ($key - $token == 9 && $key != $lastKey)
+			if ($key - $page == 9 && $key != $lastKey)
 			{
 				//	Set more pages to true or 1
 				$bulletinPaged["hasPage"] = 1;
@@ -259,4 +186,4 @@
 	//	-	bulletin data
 	//	-	hasPage
 	//	-	size
-	messageSender($status, $bulletinPaged);
+	messageSender(1, $bulletinPaged);

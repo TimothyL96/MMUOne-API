@@ -5,7 +5,7 @@
 	 * Date: 09/6/2018
 	 * Time: 1:32 AM
 	 */
-	class token
+	class page
 	{
 		//	Members for connection and table name
 		private $conn;
@@ -105,7 +105,7 @@
 
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-			$this->token = $row['token'];
+			$this->token = $row['page'];
 
 			return TRUE;
 		}

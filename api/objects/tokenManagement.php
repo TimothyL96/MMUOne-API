@@ -18,7 +18,7 @@
 		$db = new Database();
 		$conn = $db->connect();
 
-		$token = new token($conn);
+		$token = new page($conn);
 
 		$studentIDFromDB = $token->getStudentID();
 		if (!$studentIDFromDB)
@@ -37,7 +37,7 @@
 		$db = new Database();
 		$conn = $db->connect();
 
-		$token = new token($conn);
+		$token = new page($conn);
 
 		//	Set student ID
 		$token->student_id = $studentID;
@@ -57,7 +57,7 @@
 		$db = new Database();
 		$conn = $db->connect();
 
-		$token = new token($conn);
+		$token = new page($conn);
 
 		//	Set student ID
 		$token->student_id = $studentID;
@@ -70,7 +70,7 @@
 		$db = new Database();
 		$conn = $db->connect();
 
-		$token = new token($conn);
+		$token = new page($conn);
 
 		//	Set student ID
 		$token->student_id = $studentID;

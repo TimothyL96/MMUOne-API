@@ -35,6 +35,7 @@
 	//	- URL
 	//	- postRequest: TRUE or FALSE
 	//	- error number
+	//	- data in array
 
 	function portalInclude($toExclude = array(), $curlData = array())
 	{
@@ -68,6 +69,7 @@
 			die();
 		}
 
+		//	Check if exist to exclude token validation
 		$student_id = NULL;
 		if (!in_array("token", $toExclude))
 		{
@@ -94,9 +96,10 @@
 				//	TODO Set error
 
 				//	Echo JSON message
+				messageSender(0, "No tab provided", 123457);
 
 				//	Kill
-				die("No tab provided");
+				die();
 			}
 			$tab = $_GET['tab'];
 		}
@@ -112,7 +115,7 @@
 		//cURL start
 		$curl = NULL;
 
-		$curlResult = curl($curl, $curlData[0], $curlData[1], $data = array(), $cookie);
+		$curlResult = curl($curl, $curlData[0], $curlData[1], $curlData[3] = array(), $cookie);
 
 		//	If result invalid
 		if (!$curlResult[0])

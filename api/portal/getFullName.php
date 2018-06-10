@@ -21,6 +21,7 @@
 	if (!$portalData)
 	{
 		//	If false, means cURL failed
+		messageSender(0, "Portal Data return error!", 11111);
 		die();
 	}
 
