@@ -9,20 +9,17 @@
 	//	Headers
 	require_once '../objects/header_get.php';
 
-	//	Connection
-	require_once '../config/connection.php';
+	//	Include token validation function
+	require_once '../objects/tokenManagement.php';
 
 	//	Include Message Sender function
 	require_once '../objects/messageSender.php';
-
-	//	Include token validation function
-	require_once '../objects/tokenManagement.php';
 
 	//	Portal object
 	require_once '../objects/portal.php';
 
 	//	Check if exist to exclude HTML DOM
-	if ($htmlDOM == "required")
+	if (isset($htmlDOM) && $htmlDOM == "required")
 	{
 		//	Get Simple HTML DOM library
 		require_once '../library/html_dom.php';
@@ -31,18 +28,14 @@
 		$htmlDOM = new simple_html_dom();
 	}
 
-	//	Instantiate users object and retrieve connection
-	$db = new Database();
-	$conn = $db->connect();
-
-	//	Set up Portal object
+	//	Set up objects
 	$portal = new Portal($conn);
+	$tokenClass = new token($conn);
 
 	$tab = NULL;
 
 	//	Remaining body:
 	//	Accept parameter: An array that can have value of:
-	//	- cookie
 	//	- tab
 	//
 	//	Second parameter: An array fill with necessary data for CuRL
@@ -51,10 +44,10 @@
 	//	- error number
 	//	- data in array
 
-	function portalInclude($toExclude = array(), $curlData = array())
+	function portalInclude($toExclude = array(), $curlData = array(), $tokenClass)
 	{
 		//	Include cURL function: curl(url, postRequest, data, cookie)
-		require_once '../objects/curl.php';
+		include_once '../objects/curl.php';
 
 		//	Get all HTTP headers
 		$headers = apache_request_headers();
@@ -64,20 +57,20 @@
 		{
 			//	Invalid request - echo error in JSON and die
 			messageSender(0, "No token received", 123456);
-			die();
+			//die();
 		}
 
 		//	Retrieve token
 		$token = $headers['Authorization'];
 
 		//	Peform token validation - Retrieve student ID from related token
-		$student_id = tokenValidation($token);
+		$student_id = tokenValidation($token, $tokenClass);
 		if (!$student_id)
 		{
 			messageSender(0, "Invalid token received", 123457);
-			die();
+			//die();
 		}
-		tokenGeneration($student_id);
+		tokenGeneration($student_id, $tokenClass);
 
 		//	Check if exist to exclude tab
 		if (!in_array("tab", $toExclude))
@@ -113,7 +106,7 @@
 		//cURL start
 		$curl = NULL;
 
-		$curlResult = curl($curl, $curlData[0], $curlData[1], $curlData[3] = array(), $cookie);
+		$curlResult = curl($curl, $curlData[0], $curlData[1], $curlData[3], $cookie);
 
 		//	If result invalid
 		if (!$curlResult[0])

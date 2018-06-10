@@ -40,7 +40,7 @@
 		$url = "https://online.mmu.edu.my/bulletin.php";
 
 		//	Get cURL result
-		$portalData = portalInclude(array(), array($url, FALSE, 54321));
+		$portalData = portalInclude(array(), array($url, FALSE, 54321), $tokenClass);
 
 		//	Check return data
 		if (!$portalData)

@@ -14,12 +14,6 @@
 	 */
 	function messageSender($status, $data, $errorCode = 0)
 	{
-		$message = array(
-			"status" => $status,
-			"code" => $errorCode,
-			"message" => $data
-		);
-
 		//	Retrieve token for output
 		$token = tokenStore::$token;
 
@@ -33,9 +27,16 @@
 		{
 			//	Create an array
 			$tmpMsg = $data;
+			$data = array();
 			$data['message'] = $tmpMsg;
 			$data['token'] = $token;
 		}
+
+		$message = array(
+			"status" => $status,
+			"code" => $errorCode,
+			"message" => $data
+		);
 
 		//	Echo the opening { for JSON output
 		echo "{";

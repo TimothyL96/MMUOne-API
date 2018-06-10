@@ -9,19 +9,20 @@
 	//	Require the token class
 	require_once 'token.php';
 
-	//	Require the connection class
+	//	Require the database class
 	require_once '../config/connection.php';
+
+	//	Require the tokenStore class
+	require_once '../objects/tokenStore.php';
+
+	$db = new Database();
+	$conn = $db->connect();
 
 	//	Check whether input token is valid or not
 	//	Return student ID
-	function tokenValidation($tokenToValidate)
+	function tokenValidation($tokenToValidate, $token)
 	{
-		$db = new Database();
-		$conn = $db->connect();
-
-		$token = new token($conn);
-
-		$studentIDFromDB = $token->getStudentID();
+		$studentIDFromDB = $token->getStudentID($tokenToValidate);
 		if (!$studentIDFromDB)
 		{
 			return FALSE;
@@ -30,18 +31,10 @@
 		return $studentIDFromDB;
 	}
 
-	function tokenGeneration($studentID)
+	function tokenGeneration($studentID, $token)
 	{
 		//	Obtain secret key
 		require_once '../../../secret.php';
-
-		$db = new Database();
-		$conn = $db->connect();
-
-		$token = new token($conn);
-
-		//	Set student ID
-		$token->student_id = $studentID;
 
 		$macAddr = $token->getMacAddr();
 		$dateTime = date("Y-m-d H:i:s");
@@ -56,28 +49,19 @@
 		return $token->updateTable($tokenHash, $dateTime);
 	}
 
-	function macAddrUpdate($studentID, $macAddr)
+	function macAddrUpdate($studentID, $macAddr, $token)
 	{
-		$db = new Database();
-		$conn = $db->connect();
-
-		$token = new token($conn);
-
 		//	Set student ID
-		$token->student_id = $studentID;
+		//$token->student_id = $studentID;
 
 		return $token->updateMacAddr($macAddr);
 	}
 
-	function checkUserExist($studentID)
+	function checkUserExist($studentID, $token)
 	{
-		$db = new Database();
-		$conn = $db->connect();
-
-		$token = new token($conn);
 
 		//	Set student ID
-		$token->student_id = $studentID;
+		//$token->student_id = $studentID;
 
 		return $token->insertNewUser();
 	}

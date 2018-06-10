@@ -41,16 +41,14 @@
 
 			$stmt = $this->conn->prepare($query);
 
-			$stmt->bindParams(1, $this->student_id);
+			$stmt->bindParam(1, $this->student_id);
 
 			if (!$stmt->execute())
 			{
 				return FALSE;
 			}
 
-			$stmt->store_result();
-
-			if ($stmt->num_rows == 1)
+			if ($stmt->rowCount() == 1)
 			{
 				return TRUE;
 			}
@@ -60,7 +58,7 @@
 
 			$stmt = $this->conn->prepare($query);
 
-			$stmt->bindParams($this->student_id);
+			$stmt->bindParam(1, $this->student_id);
 
 			if (!$stmt->execute())
 			{
@@ -76,7 +74,7 @@
 
 			$stmt = $this->conn->prepare($query);
 
-			$stmt->bindParams($query);
+			$stmt->bindParam(1, $this->student_id);
 
 			if (!$stmt->execute())
 			{
@@ -96,7 +94,7 @@
 
 			$stmt = $this->conn->prepare($query);
 
-			$stmt->bindParams(1, $this->student_id);
+			$stmt->bindParam(1, $this->student_id);
 
 			if (!$stmt->execute())
 			{
@@ -116,15 +114,14 @@
 
 			$stmt = $this->conn->prepare($query);
 
-			$stmt->bindParams(1, $token);
+			$stmt->bindParam(1, $token);
 
 			if (!$stmt->execute())
 			{
 				return FALSE;
 			}
 
-			$stmt->store_result();
-			$count = $stmt->num_rows;
+			$count = $stmt->rowCount();
 
 			if ($count == 1)
 			{
@@ -143,8 +140,8 @@
 
 			$stmt = $this->conn->prepare($query);
 
-			$stmt->bindParams(1, $macAddr);
-			$stmt->bindParams(2, $this->student_id);
+			$stmt->bindParam(1, $macAddr);
+			$stmt->bindParam(2, $this->student_id);
 
 			if (!$stmt->execute())
 			{
@@ -161,9 +158,9 @@
 
 			$stmt = $this->conn->prepare($query);
 
-			$stmt->bindParams(":token", $token);
-			$stmt->bindParams(":dateTime", $dateTime);
-			$stmt->bindParams(":studentID", $this->student_id);
+			$stmt->bindParam(":token", $token);
+			$stmt->bindParam(":dateTime", $dateTime);
+			$stmt->bindParam(":studentID", $this->student_id);
 
 			if (!$stmt->execute())
 			{

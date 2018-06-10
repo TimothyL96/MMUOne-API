@@ -15,7 +15,7 @@
 	require_once '../objects/portal_helper.php';
 
 	//	Portal body
-	$portalData = portalInclude(array(), array("https://online.mmu.edu.my/index.php", FALSE, 12345));
+	$portalData = portalInclude(array("tab"), array("https://online.mmu.edu.my/index.php", FALSE, 12345), $tokenClass);
 
 	//	Check return data
 	if (!$portalData)

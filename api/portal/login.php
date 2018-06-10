@@ -46,7 +46,7 @@
 		
 	//	Login to MMU Portal
 	//	Check if login fails
-	if (!login($studentID, $password, $cookie))
+	if (!login($studentID, $password, $cookie, $tokenClass))
 	{
 		//	Failed to login user to MMU Portal
 		//	Echo JSON message
@@ -60,7 +60,7 @@
 	messageSender(1, "Logged in");
 
 	//	Login function with URL and cURL
-	function login($studentID, $passwordMMU, $cookie)
+	function login($studentID, $passwordMMU, $cookie, $tokenClass)
 	{
 		//	Login user
 		//	Session ends when browser ends
@@ -72,9 +72,9 @@
 		$data = array('form_loginUsername' => $studentID, 'form_loginPassword' => $passwordMMU);
 
 		//	It is a POST request
-		$postRequest = true;
+		$postRequest = TRUE;
 
-		$portalData = portalInclude(array("tab", "cookie"), array($url, $postRequest, 987665, $data));
+		$portalData = portalInclude(array("tab"), array($url, $postRequest, 987665, $data), $tokenClass);
 
 		//	Check return data
 		if (!$portalData)
@@ -84,7 +84,7 @@
 			die();
 		}
 
-		if (strpos($portalData, "WELCOME TO MMU ONLINE PORTAL!") === FALSE)
+		if (strpos($portalData, "WELCOME TO MMU ONLINE PORTAL!") !== FALSE)
 		{
 			return FALSE;
 		}

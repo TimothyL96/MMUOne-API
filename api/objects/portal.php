@@ -198,18 +198,15 @@
 
 			$stmt = $this->conn->prepare($query);
 
-			$stmt->bindParams(1, $this->student_id);
+			$stmt->bindParam(1, $this->student_id);
 
 			if (!$stmt->execute())
 			{
 				return FALSE;
 			}
 
-			//	Store result to get number of rows
-			$stmt->store_result();
-
 			//	If row for user existed
-			if ($stmt->num_rows == 1)
+			if ($stmt->rowCount() == 1)
 			{
 				return TRUE;
 			}
@@ -220,7 +217,7 @@
 
 			$stmt = $this->conn->prepare($query);
 
-			$stmt->bindParams(1, $this->student_id);
+			$stmt->bindParam(1, $this->student_id);
 
 			if (!$stmt->execute())
 			{

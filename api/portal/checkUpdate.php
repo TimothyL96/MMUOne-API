@@ -8,7 +8,7 @@
 
 	require_once '../objects/portal_helper.php';
 
-	$portalData = portalInclude(array(), array());
+	$portalData = portalInclude(array(), array(), $tokenClass);
 
 	//	Check return data
 	if (!$portalData)
@@ -17,7 +17,7 @@
 		messageSender(0, "Portal Data return error!", 11111);
 		die();
 	}
-
+	
 	//	Check for any new updates for the bulletin news
 	//	Get result
 	$portal->getHash($tab);
