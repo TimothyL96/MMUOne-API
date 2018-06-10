@@ -5,6 +5,7 @@
 	//	Require connection and users functions
 	require_once '../config/connection.php';
 	require_once '../objects/users.php';
+	require_once '../objects/tokenManagement.php';
 	
 	//	New users objects
 	$db = new Database();
@@ -24,6 +25,15 @@
 	if ($users->loginUser())
 	{
 		//	Succeeded
+		//	Check first time user
+		checkUserExist($users->student_id);
+
+		//	Update user current device MAC address
+		macAddrUpdate($users->student_id, $_GET['macaddr']);
+
+		//	Generate access token
+		tokenGeneration($users->student_id);
+
 		//	Set values for message array
 		$users->message['status'] = "1";
 		$users->message['code'] = $errorCode;

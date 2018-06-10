@@ -13,12 +13,13 @@
 	require_once '../config/connection.php';
 
 	//	Check whether input token is valid or not
+	//	Return student ID
 	function tokenValidation($tokenToValidate)
 	{
 		$db = new Database();
 		$conn = $db->connect();
 
-		$token = new page($conn);
+		$token = new token($conn);
 
 		$studentIDFromDB = $token->getStudentID();
 		if (!$studentIDFromDB)
@@ -37,7 +38,7 @@
 		$db = new Database();
 		$conn = $db->connect();
 
-		$token = new page($conn);
+		$token = new token($conn);
 
 		//	Set student ID
 		$token->student_id = $studentID;
@@ -48,6 +49,9 @@
 		//	Generate token
 		$tokenHash = hash_hmac('sha256', $studentID . $macAddr . $dateTime, $secretKey);
 
+		//	Store in token store
+		tokenStore::$token = $tokenHash;
+
 		//	Store token and time
 		return $token->updateTable($tokenHash, $dateTime);
 	}
@@ -57,7 +61,7 @@
 		$db = new Database();
 		$conn = $db->connect();
 
-		$token = new page($conn);
+		$token = new token($conn);
 
 		//	Set student ID
 		$token->student_id = $studentID;
@@ -70,7 +74,7 @@
 		$db = new Database();
 		$conn = $db->connect();
 
-		$token = new page($conn);
+		$token = new token($conn);
 
 		//	Set student ID
 		$token->student_id = $studentID;

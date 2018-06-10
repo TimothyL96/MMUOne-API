@@ -8,6 +8,8 @@
 
 	require_once '../objects/portal_helper.php';
 
+	$portalData = portalInclude(array(), array());
+
 	//	Check return data
 	if (!$portalData)
 	{

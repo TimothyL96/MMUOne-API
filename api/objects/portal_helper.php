@@ -18,6 +18,9 @@
 	//	Include token validation function
 	require_once '../objects/tokenManagement.php';
 
+	//	Portal object
+	require_once '../objects/portal.php';
+
 	//	Check if exist to exclude HTML DOM
 	if ($htmlDOM == "required")
 	{
@@ -28,11 +31,19 @@
 		$htmlDOM = new simple_html_dom();
 	}
 
+	//	Instantiate users object and retrieve connection
+	$db = new Database();
+	$conn = $db->connect();
+
+	//	Set up Portal object
+	$portal = new Portal($conn);
+
+	$tab = NULL;
+
 	//	Remaining body:
 	//	Accept parameter: An array that can have value of:
 	//	- cookie
 	//	- tab
-	//	- token
 	//
 	//	Second parameter: An array fill with necessary data for CuRL
 	//	- URL
@@ -42,18 +53,8 @@
 
 	function portalInclude($toExclude = array(), $curlData = array())
 	{
-		//	Portal object
-		require_once '../objects/portal.php';
-
 		//	Include cURL function: curl(url, postRequest, data, cookie)
 		require_once '../objects/curl.php';
-
-		//	Instantiate users object and retrieve connection
-		$db = new Database();
-		$conn = $db->connect();
-
-		//	Set up Portal object
-		$portal = new Portal($conn);
 
 		//	Get all HTTP headers
 		$headers = apache_request_headers();
@@ -66,24 +67,19 @@
 			die();
 		}
 
-		//	Check if exist to exclude token validation
-		$student_id = NULL;
-		if (!in_array("token", $toExclude))
-		{
-			//	Retrieve token
-			$token = $headers['Authorization'];
+		//	Retrieve token
+		$token = $headers['Authorization'];
 
-			//	Peform token validation - Retrieve student ID from related token
-			$student_id = tokenValidation($token);
-			if (!$student_id)
-			{
-				messageSender(0, "Invalid token received", 123457);
-				die();
-			}
+		//	Peform token validation - Retrieve student ID from related token
+		$student_id = tokenValidation($token);
+		if (!$student_id)
+		{
+			messageSender(0, "Invalid token received", 123457);
+			die();
 		}
+		tokenGeneration($student_id);
 
 		//	Check if exist to exclude tab
-		$tab = NULL;
 		if (!in_array("tab", $toExclude))
 		{
 			//	Get $_GET data
@@ -109,6 +105,11 @@
 			$cookie = "cookie/portal_{$student_id}.cke";
 		}
 
+		if (empty($curlData))
+		{
+			return TRUE;
+		}
+
 		//cURL start
 		$curl = NULL;
 
@@ -119,7 +120,7 @@
 		{
 			//	cURL failed
 			//	TODO ADD ERROR MESSAGE
-			$error = $curlData[2];
+			//$error = $curlData[2];
 
 			return false;
 		}

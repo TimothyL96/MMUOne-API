@@ -20,6 +20,23 @@
 			"message" => $data
 		);
 
+		//	Retrieve token for output
+		$token = tokenStore::$token;
+
+		//	Append token to current message
+		if (is_array($data))
+		{
+			//	Append message to array
+			$data['token'] = $token;
+		}
+		else
+		{
+			//	Create an array
+			$tmpMsg = $data;
+			$data['message'] = $tmpMsg;
+			$data['token'] = $token;
+		}
+
 		//	Echo the opening { for JSON output
 		echo "{";
 

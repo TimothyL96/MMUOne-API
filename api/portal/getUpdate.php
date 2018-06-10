@@ -19,9 +19,9 @@
 	}
 
 	//	Check if page number provided
-	if (!empty($_GET['page']))
+	if (!empty($_GET['token']))
 	{
-		$page = $_GET['page'];
+		$page = $_GET['token'];
 	}
 
 	//	Set bulletin paged array
