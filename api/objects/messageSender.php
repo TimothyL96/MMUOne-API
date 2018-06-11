@@ -18,18 +18,21 @@
 		$token = tokenStore::$token;
 
 		//	Append token to current message
-		if (is_array($data))
+		if (!empty($token))
 		{
-			//	Append message to array
-			$data['token'] = $token;
-		}
-		else
-		{
-			//	Create an array
-			$tmpMsg = $data;
-			$data = array();
-			$data['message'] = $tmpMsg;
-			$data['token'] = $token;
+			if (is_array($data))
+			{
+				//	Append message to array
+				$data['token'] = $token;
+			}
+			else
+			{
+				//	Create an array
+				$tmpMsg = $data;
+				$data = array();
+				$data['message'] = $tmpMsg;
+				$data['token'] = $token;
+			}
 		}
 
 		$message = array(

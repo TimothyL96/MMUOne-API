@@ -32,11 +32,8 @@
 	$portal = new Portal($conn);
 	$tokenClass = new token($conn);
 
-	$tab = NULL;
-
 	//	Remaining body:
 	//	Accept parameter: An array that can have value of:
-	//	- tab
 	//
 	//	Second parameter: An array fill with necessary data for CuRL
 	//	- URL
@@ -44,7 +41,7 @@
 	//	- error number
 	//	- data in array
 
-	function portalInclude($toExclude = array(), $curlData = array(), $tokenClass)
+	function portalInclude($curlData = array(), $tokenClass, $portal)
 	{
 		//	Include cURL function: curl(url, postRequest, data, cookie)
 		include_once '../objects/curl.php';
@@ -57,7 +54,7 @@
 		{
 			//	Invalid request - echo error in JSON and die
 			messageSender(0, "No token received", 123456);
-			//die();
+			die();
 		}
 
 		//	Retrieve token
@@ -68,35 +65,15 @@
 		if (!$student_id)
 		{
 			messageSender(0, "Invalid token received", 123457);
-			//die();
+			die();
 		}
 		tokenGeneration($student_id, $tokenClass);
 
-		//	Check if exist to exclude tab
-		if (!in_array("tab", $toExclude))
-		{
-			//	Get $_GET data
-			//	Check if tab provided
-			if (empty($_GET['tab']))
-			{
-				//	TODO Set error
+		//	Set portal student ID
+		$portal->student_id = $student_id;
 
-				//	Echo JSON message
-				messageSender(0, "No tab provided", 123457);
-
-				//	Kill
-				die();
-			}
-			$tab = $_GET['tab'];
-		}
-
-		//	Check if exist to exclude cookie
-		$cookie = NULL;
-		if (!in_array("cookie", $toExclude))
-		{
-			//	Set cookie
-			$cookie = "cookie/portal_{$student_id}.cke";
-		}
+		//	Set cookie
+		$cookie = "cookie/portal_{$student_id}.cke";
 
 		if (empty($curlData))
 		{

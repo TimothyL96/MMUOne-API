@@ -18,10 +18,24 @@
 		$forcedUpdate = (bool)$_GET['force_update'];
 	}
 
-	//	Check if page number provided
-	if (!empty($_GET['token']))
+	//	Get $_GET data
+	//	Check if tab provided
+	if (empty($_GET['tab']))
 	{
-		$page = $_GET['token'];
+		//	TODO Set error
+
+		//	Echo JSON message
+		messageSender(0, "No tab provided", 123457);
+
+		//	Kill
+		die();
+	}
+	$tab = $_GET['tab'];
+
+	//	Check if page number provided
+	if (!empty($_GET['page']))
+	{
+		$page = $_GET['page'];
 	}
 
 	//	Set bulletin paged array
@@ -29,7 +43,7 @@
 	$bulletinPaged["bulletin"] = array();
 	$bulletinPaged["hasPage"] = 0;
 	$bulletinPaged["size"] = 0;
-	$bulletinPaged["token"] = 0;
+	$bulletinPaged["page"] = 0;
 
 	if (empty($page))
 	{
@@ -40,7 +54,7 @@
 		$url = "https://online.mmu.edu.my/bulletin.php";
 
 		//	Get cURL result
-		$portalData = portalInclude(array(), array($url, FALSE, 54321), $tokenClass);
+		$portalData = portalInclude(array($url, FALSE, 54321), $tokenClass, $portal);
 
 		//	Check return data
 		if (!$portalData)
@@ -92,7 +106,7 @@
 				$bulletinPaged["size"] = $bulletinPaged["size"] + 1;
 
 				//	Token is the total size sent
-				$bulletinPaged["token"] = $bulletinPaged["token"] + 1;
+				$bulletinPaged["page"] = $bulletinPaged["page"] + 1;
 
 				//	If max key reached
 				if ($key == 9)
@@ -125,7 +139,7 @@
 		//	If token exist, get next page of data and echo as JSON
 		//	$token is total bulletin size sent
 		//	Set the bulletin token
-		$bulletinPaged["token"] = $page;
+		$bulletinPaged["page"] = $page;
 
 		//	Get bulletin data
 		$bulletin = $portal->getBulletin($tab);
@@ -168,7 +182,7 @@
 			$bulletinPaged["size"] = $bulletinPaged["size"] + 1;
 
 			//	Token is the total size sent
-			$bulletinPaged["token"] = $bulletinPaged["token"] + 1;
+			$bulletinPaged["page"] = $bulletinPaged["page"] + 1;
 
 			//	If max key reached
 			if ($key - $page == 9 && $key != $lastKey)

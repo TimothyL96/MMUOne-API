@@ -15,7 +15,8 @@
 	require_once '../objects/portal_helper.php';
 
 	//	Portal body
-	$portalData = portalInclude(array("tab"), array("https://online.mmu.edu.my/index.php", FALSE, 12345), $tokenClass);
+	$url = "https://online.mmu.edu.my/index.php";
+	$portalData = portalInclude(array($url, FALSE, 12345), $tokenClass, $portal);
 
 	//	Check return data
 	if (!$portalData)
@@ -36,7 +37,7 @@
 	$fullName = trim(substr(trim($inputFullName[0]->plaintext), 8, strripos($inputFullName[0]->plaintext, "(") - 8));
 
 	//	Echo the full name
-	messageSender(1, $fullName);
+	messageSender(1, array("message" => $fullName));
 
 	//	Clear the DOM memory
 	$htmlDOM->clear();

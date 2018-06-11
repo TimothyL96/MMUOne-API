@@ -45,7 +45,6 @@
 
 		//	Set values for message array
 		$status = "1";
-		$users->message['code'] = 0;
 		$users->message['message'] = "User successfully logged in";
 	}
 	else
@@ -60,7 +59,6 @@
 	
 		//	Set values for message array
 		$status = "0";
-		$users->message['code'] = $errorCode;
 		$users->message['message'] = $errorText;
 	}
 

@@ -28,7 +28,7 @@
 			return FALSE;
 		}
 
-		return $studentIDFromDB;
+		return $token->student_id;
 	}
 
 	function tokenGeneration($studentID, $token)
