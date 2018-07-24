@@ -22,13 +22,12 @@
 	//	Load cURL
 	$camsysData = camsysInclude(array($url, $postRequest, 123123123), $tokenClass);
 
-	Log.d($camsysData);
 	//	Load the string to HTML DOM without stripping /r/n tags
 	$htmlDOM->load($camsysData, true, false);
 
 	//	Find the desired input field
-	$balance = $htmlDOM->find('div[id=win0divDERIVED_SSF_MSG_SSF_MSG_LONG3]');
-
+	$balance = $htmlDOM->find('span[id=N_CUST_SS_DRVD_ACCOUNT_BALANCE]');
+	
 	//	Check if is "You have no outstanding charges at this time."
 	if ($balance[0]->plaintext == "You have no outstanding charges at this time.")
 	{
