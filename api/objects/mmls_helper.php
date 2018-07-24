@@ -2,45 +2,45 @@
 	/**
 	 * Created by PhpStorm.
 	 * User: Timothy
-	 * Date: 11/6/2018
-	 * Time: 4:59 PM
+	 * Date: 24/7/2018
+	 * Time: 10:24 PM
 	 */
 
 	//	Headers
 	require_once '../objects/header_get.php';
 
-	//	Camsys object
-	require_once '../objects/camsys.php';
+	//	MMLS object
+	require_once '../objects/mmls.php';
 
-	//	Get Simple HTML DOM library
+	//	HTML DOM Library
 	require_once '../library/html_dom.php';
 
 	//	Token management methods
 	require_once '../objects/tokenManagement.php';
 
-	//	Include Message Sender function
+	//	messageSender() function
 	require_once '../objects/messageSender.php';
 
 	//	Set up objects
-	$camsys = new camsys($conn);
+	$mmls = new mmls($conn);
 	$tokenClass = new token($conn);
 
-	//	Include specific code and cURL call
-	//	Accept parameter:
-	//	toLogin: boolean. True to get token from tokenStore instead of apache header
+	//	mmlsInclude: To act as a surface for cURL call
+	//	Accepted parameters:
+	//	array(), tokenClass, $toLogin
 	//
-	//
-	function camsysInclude($curlData = array(), $tokenClass, $toLogin = 0)
+	function mmlsInclude($curlData = array(), $tokenClass, $toLogin = 0)
 	{
 		//	Include cURL function: curl(url, postRequest, data, cookie)
 		include_once '../objects/curl.php';
 
-		require '../objects/tokenReceiveCheck.php';
+		//require '../objects/tokenReceiveCheck.php';
 
 		$student_id = $tokenClass->student_id;
+		$student_id = "1142700462";
 
 		//	Set cookie
-		$cookie = "cookie/camsys_{$student_id}.cke";
+		$cookie = "cookie/mmls_{$student_id}.cke";
 
 		if (empty($curlData))
 		{
@@ -58,7 +58,7 @@
 			//	cURL failed
 			//	TODO ADD ERROR MESSAGE
 			//$error = $curlData[2];
-			messageSender(0, "curlResult[0] is not true", 95123123);
+			messageSender(0, "mmls curlResult[0] is not true", 7890987);
 
 			return false;
 		}

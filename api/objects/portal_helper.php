@@ -48,10 +48,10 @@
 		require_once '../objects/tokenReceiveCheck.php';
 
 		//	Set portal student ID
-		$portal->student_id = $student_id;
+		$portal->student_id = $tokenClass->student_id;
 
 		//	Set cookie
-		$cookie = "cookie/portal_{$student_id}.cke";
+		$cookie = "cookie/portal_{$portal->student_id}.cke";
 
 		if (empty($curlData))
 		{
