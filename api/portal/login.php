@@ -16,7 +16,11 @@
 	$users = new Users($conn);
 	
 	//	Set the student ID
-	$users->student_id = $_GET['student_id'];
+	$headers = apache_request_headers();
+	if ($tokenClass->getStudentID($headers['Authorization']))
+	{
+		$users->student_id = $tokenClass->student_id;
+	}
 
 	//	Set cookie
 	$cookie = "cookie/portal_{$users->student_id}.cke";
@@ -34,16 +38,16 @@
 	{
 		//	Failed to get user's MMU (IDM) password.
 		//	Echo JSON message
-		messageSender(0, "Failed to get user's MMU password", 99999);
+		messageSender(0, "Failed to get user's MMU password of ID " . $users->student_id , 99999);
 
 		//	Kill
 		die();
 	}
-	
+
 	//	Set Login Credentials for MMU Portal
 	$studentID = $users->student_id;
 	$password = $users->password_mmu;
-		
+
 	//	Login to MMU Portal
 	//	Check if login fails
 	if (!login($studentID, $password, $cookie, $tokenClass, $portal))
@@ -84,7 +88,7 @@
 			die();
 		}
 
-		if (strpos($portalData, "WELCOME TO MMU ONLINE PORTAL!") !== FALSE)
+		if (strpos($portalData, "WELCOME TO MMU ONLINE PORTAL!") === FALSE)
 		{
 			return FALSE;
 		}

@@ -5,53 +5,21 @@
 	//
 	//	***********************************
 
-	//	Headers
-	require_once '../objects/header_get.php';
-	
-	//	Connection
-	require_once '../config/connection.php';
-	
+	//	Require camsys helper
+	require_once '../objects/camsys_helper.php';
+
 	//	Users object
 	require_once '../objects/users.php';
-
-	//	Portal object
-	require_once '../objects/camsys.php';
-
-	//	Get Simple HTML DOM library
-	require_once '../library/html_dom.php';
-
-	//	Include cURL function: curl(url, postRequest, data, cookie)
-	require_once '../objects/curl.php';
-
-	//	Include Message Sender function
-	require_once '../objects/messageSender.php';
-
-	//	Instantiate users object and retrieve connection
-	$db = new Database();
-	$conn = $db->connect();
 	
 	//	Set connection for users table
 	$users = new Users($conn);
 
-	//	Set up Portal object
-	$camsys = new camsys($conn);
-
-	//	Set error
-	$error = 00000;
-
-	//	Check if Student ID provided
-	if (empty($_GET['student_id']))
-	{
-		//	TODO Set error
-
-		//	Echo JSON message
-
-		//	Kill
-		die("No student ID specified");
-	}
-
 	//	Set the student ID
-	$users->student_id = $_GET['student_id'];
+	$headers = apache_request_headers();
+	if ($tokenClass->getStudentID($headers['Authorization']))
+	{
+		$users->student_id = $tokenClass->student_id;
+	}
 
 	//	Set cookie
 	$cookie = "cookie/camsys_{$users->student_id}.cke";
@@ -73,11 +41,11 @@
 		//	Echo JSON message
 
 		//	Kill
-		die("Failed to get user's MMU password");
+		messageSender(0, "Failed to get user's MMU password", 99999);
 	}
 
 	//	Set Login Credentials for MMU Portal
-	$studentID = $_GET['student_id'];
+	$studentID = $users->student_id;
 	$password = $users->password_mmu;
 
 	//	URL of MMU Portal
@@ -89,32 +57,15 @@
 	//	It is a post request
 	$postRequest = true;
 
-	//cURL
-	$curl = NULL;
+	$camsysData = camsysInclude(array($url, $postRequest, 123459, $data), $tokenClass);
 
-	//	Connect to CamSYS with cURL to get cookie
-	$curlResult = curl($curl, $url, $postRequest, $data, $cookie);
+	$camsysData = camsysInclude(array($url, $postRequest, 123459, $data), $tokenClass, 1);
 
-	if (!$curlResult[0])
+	if (strpos($camsysData, "Sign out") === FALSE)
 	{
-		//	log in failed
-		//	TODO ADD ERROR MESSAGE
-		$this->error = 20601;
-
-		return false;
+		messageSender(0, "Login failed", 666999);
 	}
-
-	//	Login to CamSYS with cURL
-	$curlResult = curl($curl, $url, $postRequest, $data, $cookie);
-
-	if (!$curlResult[0])
+	else
 	{
-		//	log in failed
-		//	TODO ADD ERROR MESSAGE
-		$this->error = 20601;
-
-		return false;
+		messageSender(1, "login succeeded cmsys");
 	}
-
-	//	TODO check if log in succeeded
-	print_r($curlResult[1]);

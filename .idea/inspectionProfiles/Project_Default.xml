@@ -325,7 +325,7 @@
     <inspection_tool class="PhpIllegalArrayKeyTypeInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PhpIllegalPsrClassPathInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PhpIllegalStringOffsetInspection" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="PhpIncludeInspection" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpIncludeInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PhpIncompatibleReturnTypeInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PhpInconsistentReturnPointsInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PhpInternalEntityUsedInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
@@ -343,7 +343,7 @@
     <inspection_tool class="PhpMultipleClassesDeclarationsInOneFile" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PhpNonCompoundUseInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PhpNonStrictObjectEqualityInspection" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="PhpParamsInspection" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpParamsInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PhpPassByRefInspection" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="PhpPropertyNamingConventionInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PhpRedundantClosingTagInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />

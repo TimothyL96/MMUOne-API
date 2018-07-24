@@ -2,56 +2,45 @@
 	/**
 	 * Created by PhpStorm.
 	 * User: Timothy
-	 * Date: 08/6/2018
-	 * Time: 11:40 PM
+	 * Date: 11/6/2018
+	 * Time: 4:59 PM
 	 */
 
 	//	Headers
 	require_once '../objects/header_get.php';
 
-	//	Include token validation function
+	//	Portal object
+	require_once '../objects/camsys.php';
+
+	//	Get Simple HTML DOM library
+	require_once '../library/html_dom.php';
+
+	//	Token management methods
 	require_once '../objects/tokenManagement.php';
 
 	//	Include Message Sender function
 	require_once '../objects/messageSender.php';
 
-	//	Portal object
-	require_once '../objects/portal.php';
-
-	//	Check if exist to exclude HTML DOM
-	if (isset($htmlDOM) && $htmlDOM == "required")
-	{
-		//	Get Simple HTML DOM library
-		require_once '../library/html_dom.php';
-
-		//	New Simple HTML DOM object
-		$htmlDOM = new simple_html_dom();
-	}
-
 	//	Set up objects
-	$portal = new Portal($conn);
+	$camsys = new camsys($conn);
 	$tokenClass = new token($conn);
 
-	//	Remaining body:
+	//	Include specific code and cURL call
+	//	Accept parameter:
+	//	toLogin: boolean. True to get token from tokenStore instead of apache header
 	//
-	//	Second parameter: An array fill with necessary data for CuRL
-	//	- URL
-	//	- postRequest: TRUE or FALSE
-	//	- error number
-	//	- data in array
-
-	function portalInclude($curlData = array(), $tokenClass, $portal)
+	//
+	function camsysInclude($curlData = array(), $tokenClass, $toLogin = 0)
 	{
 		//	Include cURL function: curl(url, postRequest, data, cookie)
 		include_once '../objects/curl.php';
 
-		require_once '../objects/tokenReceiveCheck.php';
+		require '../objects/tokenReceiveCheck.php';
 
-		//	Set portal student ID
-		$portal->student_id = $student_id;
+		$student_id = $tokenClass->student_id;
 
 		//	Set cookie
-		$cookie = "cookie/portal_{$student_id}.cke";
+		$cookie = "cookie/camsys_{$student_id}.cke";
 
 		if (empty($curlData))
 		{
@@ -69,6 +58,7 @@
 			//	cURL failed
 			//	TODO ADD ERROR MESSAGE
 			//$error = $curlData[2];
+			messageSender(0, "curlResult[0] is not true", 95123123);
 
 			return false;
 		}
