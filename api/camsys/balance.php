@@ -27,7 +27,7 @@
 
 	//	Find the desired input field
 	$balance = $htmlDOM->find('span[id=N_CUST_SS_DRVD_ACCOUNT_BALANCE]');
-	
+
 	//	Check if is "You have no outstanding charges at this time."
 	if ($balance[0]->plaintext == "You have no outstanding charges at this time.")
 	{

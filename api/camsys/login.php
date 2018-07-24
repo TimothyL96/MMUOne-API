@@ -16,7 +16,7 @@
 
 	//	Set the student ID
 	$headers = apache_request_headers();
-	//if ($tokenClass->getStudentID($headers['Authorization']))
+	if ($tokenClass->getStudentID($headers['Authorization']))
 	{
 		$users->student_id = $tokenClass->student_id;
 	}
