@@ -38,7 +38,7 @@
 		require '../objects/tokenReceiveCheck.php';
 
 		$student_id = $tokenClass->student_id;
-
+		//$student_id = "1142700462";
 		//	Set cookie
 		$cookie = "cookie/camsys_{$student_id}.cke";
 

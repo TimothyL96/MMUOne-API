@@ -7,62 +7,15 @@
 	 */
 	//	Get class attendance
 
-	//	Headers
-	require_once '../objects/header_get.php';
-
-	//	Connection
-	require_once '../config/connection.php';
-
-	//	Users object
-	require_once '../objects/users.php';
-
-	//	Portal object
-	require_once '../objects/camsys.php';
-
-	//	Get Simple HTML DOM library
-	require_once '../library/html_dom.php';
-
-	//	Include cURL function: curl(url, postRequest, data, cookie)
-	require_once '../objects/curl.php';
-
-	//	Include Message Sender function
-	require_once '../objects/messageSender.php';
-
-	//	Instantiate users object and retrieve connection
-	$db = new Database();
-	$conn = $db->connect();
-
-	//	Set connection for users table
-	$users = new Users($conn);
-
-	//	Set up Portal object
-	$camsys = new camsys($conn);
+	//	Require camsys helper
+	require_once '../objects/camsys_helper.php';
 
 	//	New Simple HTML DOM object
 	$htmlDOM = new simple_html_dom();
 
-	//	Set error
-	$error = 00000;
-
-	//	Check if Student ID provided
-	if (empty($_GET['student_id']))
-	{
-		//	TODO Set error
-
-		//	Echo JSON message
-
-		//	Kill
-		die("No student ID specified");
-	}
-
-	//	Set the student ID
-	$users->student_id = $_GET['student_id'];
-
-	//	Set cookie
-	$cookie = "cookie/camsys_{$users->student_id}.cke";
-
 	//	Store the attendance data
 	$attendance = array();
+	$attendanceFinal = array();
 
 	//	URL for attendance checking
 	$url = "https://cms.mmu.edu.my/psc/csprd/EMPLOYEE/HRMS/c/N_SR_STUDENT_RECORDS.N_SR_SS_ATTEND_PCT.GBL?PortalActualURL=https%3a%2f%2fcms.mmu.edu.my%2fpsc%2fcsprd%2fEMPLOYEE%2fHRMS%2fc%2fN_SR_STUDENT_RECORDS.N_SR_SS_ATTEND_PCT.GBL&PortalContentURL=https%3a%2f%2fcms.mmu.edu.my%2fpsc%2fcsprd%2fEMPLOYEE%2fHRMS%2fc%2fN_SR_STUDENT_RECORDS.N_SR_SS_ATTEND_PCT.GBL&PortalContentProvider=HRMS&PortalCRefLabel=Attendance%20Percentage%20by%20class&PortalRegistryName=EMPLOYEE&PortalServletURI=https%3a%2f%2fcms.mmu.edu.my%2fpsp%2fcsprd%2f&PortalURI=https%3a%2f%2fcms.mmu.edu.my%2fpsc%2fcsprd%2f&PortalHostNode=HRMS&NoCrumbs=yes&PortalKeyStruct=yes";
@@ -70,23 +23,11 @@
 	//	It is a post request
 	$postRequest = FALSE;
 
-	//cURL
-	$curl = NULL;
-
-	//	Get attendance data for current trimester
-	$curlResult = curl($curl, $url, $postRequest, $data = array(), $cookie);
-
-	if (!$curlResult[0])
-	{
-		//	check attendance failed
-		//	TODO ADD ERROR MESSAGE
-		$this->error = 20601;
-
-		return false;
-	}
+	//	Load cURL
+	$camsysData = camsysInclude(array($url, $postRequest, 79797979), $tokenClass);
 
 	//	Load the string to HTML DOM without stripping /r/n tags
-	$htmlDOM->load($curlResult[1], true, false);
+	$htmlDOM->load($camsysData, true, false);
 
 	//	Find the desired input field
 	$attendanceTable = $htmlDOM->find('table.PSLEVEL1GRIDWBO tr');
@@ -105,15 +46,36 @@
 	for ($i = 3; $i < $subjectCount; $i++)
 	{
 		$attendanceSubjectPlaintext = $attendanceTable[$i]->plaintext;
-		$attendance[substr($attendanceSubjectPlaintext, 0, strpos($attendanceSubjectPlaintext, ' '))] = substr($attendanceSubjectPlaintext, strpos($attendanceSubjectPlaintext, ' '));
+		$attendance[substr($attendanceSubjectPlaintext, 0, strpos($attendanceSubjectPlaintext, ' '))] = trim(substr($attendanceSubjectPlaintext, strpos($attendanceSubjectPlaintext, ' ')));
 	}
 
 	//	Clear the Simple HTML DOM library memory leak
 	$htmlDOM->clear();
 
+	foreach ($attendance as $attendanceSubject)
+	{
+		$attendanceSubject = explode(' ', $attendanceSubject);
+
+		//	Trim
+		$attendanceSubject = array_map('trim', $attendanceSubject);
+
+		array_push($attendanceFinal, $attendanceSubject);
+	}
+
+	//	$attendanceFinal:
+	//	0: MPU
+	//	1: 3113
+	//	2: Lecture/Tutorial
+	//	3: Subject Name
+	//	Last 5th: Current Attendance %
+	//	Last 4rd: Barring Process Attendance %
+	//	Last 3rd - Last Updated By: MU070320
+	//	Last 2nd - Date: 11/05/2018
+	//	Last - Time: 11:30:17AM
+
 	//	TODO store in database
 
 	//	Echo the attendance
-	messageSender(1, $attendance);
+	messageSender(1, $attendanceFinal);
 
 	//	TODO check if login timedout
