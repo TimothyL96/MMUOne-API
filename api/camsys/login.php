@@ -20,7 +20,7 @@
 	{
 		$users->student_id = $tokenClass->student_id;
 	}
-	//$users->student_id = "1142700462";
+	$users->student_id = "1142700462";
 	//	Set cookie
 	$cookie = "cookie/camsys_{$users->student_id}.cke";
 

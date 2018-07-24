@@ -7,83 +7,48 @@
 	 */
 	//	Get class schedule
 
-	//	Headers
-	require_once '../objects/header_get.php';
-
-	//	Connection
-	require_once '../config/connection.php';
-
-	//	Users object
-	require_once '../objects/users.php';
-
-	//	Portal object
-	require_once '../objects/camsys.php';
-
-	//	Get Simple HTML DOM library
-	require_once '../library/html_dom.php';
-
-	//	Include cURL function: curl(url, postRequest, data, cookie)
-	require_once '../objects/curl.php';
-
-	//	Include Message Sender function
-	require_once '../objects/messageSender.php';
-
-	//	Instantiate users object and retrieve connection
-	$db = new Database();
-	$conn = $db->connect();
-
-	//	Set connection for users table
-	$users = new Users($conn);
-
-	//	Set up Portal object
-	$camsys = new camsys($conn);
+	//	Require camsys helper
+	require_once '../objects/camsys_helper.php';
 
 	//	New Simple HTML DOM object
 	$htmlDOM = new simple_html_dom();
 
-	//	Set error
-	$error = 00000;
-
-	//	Check if Student ID provided
-	if (empty($_GET['student_id']))
-	{
-		//	TODO Set error
-
-		//	Echo JSON message
-
-		//	Kill
-		die("No student ID specified");
-	}
-
-	//	Set the student ID
-	$users->student_id = $_GET['student_id'];
-
-	//	Set cookie
-	$cookie = "cookie/camsys_{$users->student_id}.cke";
-
 	//	URL for getting class schedule
 	$url = "https://cms.mmu.edu.my/psc/csprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSR_SSENRL_SCHD_W.GBL?Page=SSR_SS_WEEK";
+	//$url = "https://cms.mmu.edu.my/psc/csprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSR_SSENRL_SCHD_W.GBL?Page=SSR_SS_WEEK&Action=A&ACAD_CAREER=UGRD&AS_OF_DATE=2018-02-02&INSTITUTION=MMU01&STRM=1810";
+	//$url = "https://cms.mmu.edu.my/psc/csprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSR_SSENRL_SCHD_W.GBL?Page=SSR_SS_WEEK&Action=A&ACAD_CAREER=UGRD&AS_OF_DATE=2018-06-02&INSTITUTION=MMU01&STRM=1810";
 
 	//	It is a post request
 	$postRequest = FALSE;
 
-	//cURL
-	$curl = NULL;
+	//	Load cURL
+	$camsysData = camsysInclude(array($url, $postRequest, 888888), $tokenClass);
 
-	//	Get class schedule for current trimester
-	$curlResult = curl($curl, $url, $postRequest, $data = array(), $cookie);
+	$htmlDOM->load($camsysData, TRUE, FALSE);
 
-	if (!$curlResult[0])
+	$classSchedule = $htmlDOM->find("span.SSSTEXTWEEKLY");
+	$classScheduleCount = count($classSchedule);
+
+	//	Array to store processed class schedules
+	$scheduleFinal = array();
+
+	if ($classScheduleCount == 0)
 	{
-		//	check account balance failed
-		//	TODO ADD ERROR MESSAGE
-		$this->error = 20601;
-
-		return false;
+		$scheduleFinal = "No class for this week";
+	}
+	else
+	{
+		//	Insert into array
+		foreach ($classSchedule as $class)
+		{
+			array_push($scheduleFinal, trim($class->plaintext));
+		}
 	}
 
-	//	Test
-	print_r($curlResult[1]);
+	//	Echo all the class schedule
+	messageSender(1, $scheduleFinal);
 
-	//	Clear the HTML DOM memory leak
+	//	Clear the HTML DOM memory leak after seeking with ->plaintext
 	$htmlDOM->clear();
+
+	//	TODO store in database
