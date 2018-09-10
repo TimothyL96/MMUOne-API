@@ -209,9 +209,13 @@
 			
 			//	Bind value for student ID
 			$stmt->bindParam(1, $this->student_id);
-			
+
 			//	Execute query
-			$stmt->execute();
+			if (!$stmt->execute())
+			{
+				$this->error = $stmt->errorInfo[1]; //$stmt->errorCode();
+				return FALSE;
+			}
 			
 			//	Get retrieved row
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -226,6 +230,7 @@
 			$this->last_login = $row['last_login'];
 			$this->date_registered = $row['date_registered'];
 
+			return TRUE;
 			//	TODO ERROR HANDLING
 		}
 		

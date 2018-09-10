@@ -25,14 +25,16 @@
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_POST, $postRequest);
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
-		curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36
-");
+		curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36");
 		curl_setopt($curl, CURLOPT_HEADER, FALSE);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-		curl_setopt($curl, CURLOPT_COOKIEJAR, $cookie);
+		if ($postRequest)
+		{
+			curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+		}
 		curl_setopt($curl, CURLOPT_COOKIEFILE, $cookie);
+		curl_setopt($curl, CURLOPT_COOKIEJAR, $cookie);
 
 		//	Execute the CURL operation and get the results
 		$result = curl_exec($curl);
@@ -52,7 +54,7 @@
 		{
 			curl_close($curl);
 		}
-		
+
 		//	Return result
 		return array($status, $result);
 	}

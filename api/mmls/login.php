@@ -7,10 +7,10 @@
 
 	//	Require camsys helper
 	require_once '../objects/mmls_helper.php';
-	
+
 	//	Users object
 	require_once '../objects/users.php';
-	
+
 	//	Set connection for users table
 	$users = new Users($conn);
 
@@ -55,7 +55,7 @@
 	///////////
 	///////////	First cURL to retrieve token
 	//	URL of MMU Portal
-	$url = "http://mmls.mmu.edu.my/";
+	$url = "https://mmls.mmu.edu.my";
 
 	//	Is it a post request?
 	$postRequest = FALSE;
@@ -72,7 +72,6 @@
 
 	//	Clear memory leak
 	$htmlDOM->clear();
-
 	///////////
 	///////////	Second cURL to login to MMLS
 	//	URL of MMU Portal
@@ -83,10 +82,29 @@
 
 	//	Data to get Login Cookies
 	$data = array('_token' => $mmlsToken, 'stud_id' => $studentID, 'stud_pswrd' => $password);
-
+	//	TODO cant send post
 	$mmlsData = mmlsInclude(array($url, $postRequest, 123400, $data), $tokenClass, 1);
 
-	messageSender(1, $mmlsData);
+	//$url = "https://mmls.mmu.edu.my/home";
+	//$mmlsData = mmlsInclude(array($url, FALSE, 123400, $data), $tokenClass, 1);
+
+	//	Check if logged in, check full name with insensitve case
+	$users->readOneByStudentID();
+	if (!$users->full_name)
+		echo "Failed";
+
+	echo "Fullname: " . $users->error;
+
+	if (stripos($mmlsData, $fullName) === FALSE)
+	{
+		//	Login failed
+		messageSender(0, "MMLS Login failed", 99996666);
+	}
+	else
+	{
+		//	Logged in
+		messageSender(1, "MMLS Login succeeded");
+	}
 
 
 		
